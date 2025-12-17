@@ -3,6 +3,7 @@ import Home from "./Pages/Home.tsx";
 import Login from "./Pages/Login.tsx";
 import Register from "./Pages/Register.tsx"
 import NotFound from "./Pages/NotFound.tsx"
+import ModulePage from "./Pages/ModulePage.tsx"
 
 import Header from "./Components/Header.tsx"
 import './App.css'
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />}/>
+          <Route path="/module/:id" element={<ModulePage />} />
         </Routes>
       </Router>
     </>

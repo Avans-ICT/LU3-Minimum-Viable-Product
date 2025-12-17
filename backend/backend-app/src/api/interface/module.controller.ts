@@ -9,4 +9,10 @@ export class ModuleController {
   async getModuleById(@Param('id', ParseIntPipe) id: number) {
     return this.moduleService.getModuleById(id);
   }
+
+
+  @Get()
+  async getAllModules() {
+    return this.moduleService.getAllModules()
+  }
 }

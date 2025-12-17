@@ -15,4 +15,15 @@ export class ModuleService {
     
     return module;
   }
+
+
+  async getAllModules(): Promise<Module[] | null>{
+    const module = await this.moduleRepository.Allmodules();
+
+    if (!module) {
+      throw new NotFoundException(`No modules found`);
+    }
+    
+    return module;
+  }
 }

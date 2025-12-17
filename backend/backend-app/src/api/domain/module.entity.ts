@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 @Schema({ collection: 'modules' })
 export class Module extends Document {
   @Prop({ required: true, unique: true })
-  moduleId: number;
+  Id: number;
 
   @Prop({ required: true })
   name: string;
