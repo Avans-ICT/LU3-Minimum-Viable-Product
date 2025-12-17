@@ -24,14 +24,15 @@ function Login() {
       });
 
       if (!response.ok) {
-        throw new Error("Login mislukt");
+        const errData = await response.json();
+        throw new Error(errData.message || "Login mislukt");
       }
 
       const data = await response.json();
       console.log("Ingelogd:", data);
       return;
     } catch (err) {
-      setError("Verkeerde email of wachtwoord")
+      setError(err instanceof Error ? err.message : "Onbekende fout")
     } finally {
       setLoading(false);
     }
