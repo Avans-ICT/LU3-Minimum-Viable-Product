@@ -12,4 +12,8 @@ export class ModuleRepository {
   async findById(id: number): Promise<Module | null> {
     return this.moduleModel.findOne({ id }).exec();
   }
+
+  async Allmodules(): Promise<Module[] | null>{
+    return this.moduleModel.find().exec()
+  }
 }
