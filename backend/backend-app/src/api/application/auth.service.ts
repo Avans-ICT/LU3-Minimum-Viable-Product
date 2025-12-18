@@ -28,11 +28,15 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { sub: user._id, email: user.email };
-    const token = this.jwtService.sign(payload);
+    const accessToken = this.signAccessToken(user._id.toString(), user.email);
+    const refreshToken = this.signRefreshToken(user._id.toString(), user.email);
+
+    const hashedRefresh = await bcrypt.hash(refreshToken, 10);
+    await this.authRepository.updateRefreshToken(user._id.toString(), hashedRefresh);
 
     return {
-      accessToken: token,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
       user: {
         id: user._id,
         email: user.email,
@@ -56,11 +60,87 @@ export class AuthService {
 
     // user opslaan via repository
     const user = await this.authRepository.createUser({ ...registerDto, password: hashed });
+
+    //tokens aanmaken voor de gebruiker
+    const accessToken = this.signAccessToken(user._id.toString(), user.email);
+    const refreshToken = this.signRefreshToken(user._id.toString(), user.email);
+
+    await this.authRepository.updateRefreshToken(
+      user._id.toString(),
+      await bcrypt.hash(refreshToken, 10),
+    );
+
     return {
-      id: user._id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    };
+  }
+
+  //token genereren
+  private signAccessToken(userId: string, email: string) : string {
+    return this.jwtService.sign(
+      { sub: userId, email },
+      { expiresIn: '15m' },
+    );
+  }
+
+  //refreshtoken genereren
+  private signRefreshToken(userId: string, email: string) : string{
+    return this.jwtService.sign(
+      { sub: userId, email },
+      { expiresIn: '7d' },
+    );
+  }
+
+  //uitloggen
+  async logout(userId?: string) {
+    if (!userId) return;
+
+    await this.authRepository.updateRefreshToken(userId, null);
+  }
+
+  //token refreshen
+  async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException();
     }
+
+    const payload = this.jwtService.verify(refreshToken);
+
+    const user = await this.authRepository.findById(payload.sub);
+    if (!user?.refreshToken) {
+      throw new UnauthorizedException();
+    }
+
+    const valid = await bcrypt.compare(refreshToken, user.refreshToken);
+    if (!valid) {
+      throw new UnauthorizedException();
+    }
+
+    const newAccessToken = this.signAccessToken(
+      user._id.toString(),
+      user.email,
+    );
+
+    const newRefreshToken = this.signRefreshToken(
+      user._id.toString(),
+      user.email,
+    );
+
+    await this.authRepository.updateRefreshToken(
+      user._id.toString(),
+      await bcrypt.hash(newRefreshToken, 10),
+    );
+
+    return {
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
   }
 }

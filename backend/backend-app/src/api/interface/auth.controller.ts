@@ -4,6 +4,7 @@ import { loginDto } from '../domain/login.dto'
 import { registerDto } from '../domain/register.dto';
 import { JwtCookieInterceptor } from 'src/jwt-cookie.interceptor';
 import { AuthGuard } from '@nestjs/passport';
+import { CsrfGuard } from 'src/csrf-guard';
 
 @Controller('/auth')
 export class AuthController {
@@ -19,21 +20,35 @@ export class AuthController {
   }
 
   //registreren
+  @UseInterceptors(JwtCookieInterceptor)
   @Post('/register')
   async Register(@Body() registerDto: registerDto) {
-    const user = await this.authService.register(registerDto);
-    return { Message: 'User registered', user };
+    return await this.authService.register(registerDto);
   }
 
+  //protected endpoint testing purposes only
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')
   getProfile(@Req() req) {
     return req.user;
   }
 
+  //uitloggen
+  @UseGuards(AuthGuard('jwt'), CsrfGuard)
   @Post('/logout')
-  logout(@Res({ passthrough: true }) res) {
+  async logout(@Req() req, @Res({ passthrough: true }) res) {
+    await this.authService.logout(req.user?.userId);
+
     res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+
     return { message: 'Logged out' };
+  }
+
+  //token refreshen
+  @UseInterceptors(JwtCookieInterceptor)
+  @Post('/refresh')
+  async refresh(@Req() req) {
+      return await this.authService.refresh(req.cookies.refresh_token);
   }
 }
