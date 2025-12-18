@@ -8,19 +8,19 @@ import Header from "./Components/Header.tsx"
 import './App.css'
 
 function App() {
-  return (
-    <>      
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<NotFound />}/>
-        </Routes>
-      </Router>
-    </>
-  )
+    return (
+        <>      
+            <Router>
+                <Header />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="*" element={<NotFound />}/>
+                </Routes>
+            </Router>
+        </>
+    )
 }
 
 export default App

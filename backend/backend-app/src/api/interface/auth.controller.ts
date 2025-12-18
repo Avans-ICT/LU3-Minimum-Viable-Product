@@ -8,47 +8,47 @@ import { CsrfGuard } from 'src/csrf-guard';
 
 @Controller('/auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService
-  ) { }
+    constructor(
+        private readonly authService: AuthService
+    ) { }
 
-  //inloggen
-  @UseInterceptors(JwtCookieInterceptor)
-  @Post('/login')
-  async Login(@Body() loginDto: loginDto) {
-    return await this.authService.login(loginDto)
-  }
+    //inloggen
+    @UseInterceptors(JwtCookieInterceptor)
+    @Post('/login')
+    async Login(@Body() loginDto: loginDto) {
+        return await this.authService.login(loginDto)
+    }
 
-  //registreren
-  @UseInterceptors(JwtCookieInterceptor)
-  @Post('/register')
-  async Register(@Body() registerDto: registerDto) {
-    return await this.authService.register(registerDto);
-  }
+    //registreren
+    @UseInterceptors(JwtCookieInterceptor)
+    @Post('/register')
+    async Register(@Body() registerDto: registerDto) {
+        return await this.authService.register(registerDto);
+    }
 
-  //protected endpoint testing purposes only
-  @UseGuards(AuthGuard('jwt'))
-  @Get('/me')
-  getProfile(@Req() req) {
-    return req.user;
-  }
+    //protected endpoint testing purposes only
+    @UseGuards(AuthGuard('jwt'))
+    @Get('/me')
+    getProfile(@Req() req) {
+        return req.user;
+    }
 
-  //uitloggen
-  @UseGuards(AuthGuard('jwt'), CsrfGuard)
-  @Post('/logout')
-  async logout(@Req() req, @Res({ passthrough: true }) res) {
-    await this.authService.logout(req.user?.userId);
+    //uitloggen
+    @UseGuards(AuthGuard('jwt'), CsrfGuard)
+    @Post('/logout')
+    async logout(@Req() req, @Res({ passthrough: true }) res) {
+        await this.authService.logout(req.user?.userId);
 
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
 
-    return { message: 'Logged out' };
-  }
+        return { message: 'Logged out' };
+    }
 
-  //token refreshen
-  @UseInterceptors(JwtCookieInterceptor)
-  @Post('/refresh')
-  async refresh(@Req() req) {
-      return await this.authService.refresh(req.cookies.refresh_token);
-  }
+    //token refreshen
+    @UseInterceptors(JwtCookieInterceptor)
+    @Post('/refresh')
+    async refresh(@Req() req) {
+        return await this.authService.refresh(req.cookies.refresh_token);
+    }
 }

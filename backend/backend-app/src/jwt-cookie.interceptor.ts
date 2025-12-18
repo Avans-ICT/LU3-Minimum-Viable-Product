@@ -6,14 +6,15 @@ import * as crypto from 'crypto';
 export class JwtCookieInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
     const res = context.switchToHttp().getResponse();
+    const isProd = process.env.NODE_ENV === 'production';
 
     return next.handle().pipe(
       tap((data) => {
         if (data?.accessToken) {
           res.cookie('access_token', data.accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: isProd,
+            sameSite: isProd ? 'none' : 'lax',
             maxAge: 1000 * 60 * 15,
           });
 
@@ -23,8 +24,8 @@ export class JwtCookieInterceptor implements NestInterceptor {
         if (data?.refreshToken) {
           res.cookie('refresh_token', data.refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: isProd,
+            sameSite: isProd ? 'none' : 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7,
           });
 
@@ -35,8 +36,8 @@ export class JwtCookieInterceptor implements NestInterceptor {
           const csrfToken = crypto.randomBytes(24).toString('hex');
           res.cookie('csrf_token', csrfToken, {
             httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: isProd,
+            sameSite: isProd ? 'none' : 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7,
           });
           data.csrfToken = csrfToken;
