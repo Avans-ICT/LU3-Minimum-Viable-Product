@@ -27,7 +27,7 @@ export class AuthController {
     }
 
     //protected endpoint testing purposes only
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), CsrfGuard)
     @Get('/me')
     getProfile(@Req() req) {
         return req.user;
@@ -47,6 +47,7 @@ export class AuthController {
 
     //token refreshen
     @UseInterceptors(JwtCookieInterceptor)
+    @UseGuards(CsrfGuard)
     @Post('/refresh')
     async refresh(@Req() req) {
         return await this.authService.refresh(req.cookies.refresh_token);

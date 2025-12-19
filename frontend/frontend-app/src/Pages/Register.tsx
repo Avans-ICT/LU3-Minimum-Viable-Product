@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { apiFetch } from "../utils/api"; // fetch helper met credentials
+import { useAuth } from "../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const { refreshAuth } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,6 +22,12 @@ function Register() {
 
         if (password !== confirmPassword) {
             setError("Wachtwoorden komen niet overeen");
+            return;
+        }
+        
+        const validationError = validateCredentials(firstName, lastName, email, password);
+        if (validationError) {
+            setError(validationError);
             return;
         }
 
@@ -41,19 +51,44 @@ function Register() {
             const data = await response.json();
             console.log("Gebruiker geregistreerd:", data);
             setSuccess(true);
-
-            // Optioneel: reset form
-            setFirstName("");
-            setLastName("");
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
+            await refreshAuth();
+            navigate("/");
+            
         } catch (err) {
             setError(err instanceof Error ? err.message : "Onbekende fout");
         } finally {
             setLoading(false);
         }
     };
+
+    function validateCredentials(firstName: string, lastName: string, email: string, password: string): string | null {
+        if (!firstName.trim()) {
+            return 'Email is verplicht';
+        }
+
+        if (!lastName.trim()) {
+            return 'Email is verplicht';
+        }
+        
+        if (!email.trim()) {
+            return 'Email is verplicht';
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return 'Ongeldig emailadres';
+        }
+
+        if (!password) {
+            return 'Wachtwoord is verplicht';
+        }
+
+        if (password.length < 8) {
+            return 'Wachtwoord moet minimaal 8 tekens bevatten';
+        }
+
+        return null;
+    }
 
     return (
         <form onSubmit={handleSubmit}>

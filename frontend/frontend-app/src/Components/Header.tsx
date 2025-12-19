@@ -1,12 +1,24 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Header() {
+    const { user, loading, logout } = useAuth();
+    
     return (
         <header style={styles.header}>
             <h1 style={{ margin: 0 }}>Mijn App</h1>
             <nav>
-                <Link style={styles.link} to="/">Home</Link>
-                <Link style={styles.link} to="/login">Login</Link>
+                {user ? (
+                    <>
+                        <Link style={styles.link} to="/">Home</Link>
+                        <button style={styles.link} onClick={logout}>Logout</button>
+                    </>
+                ) : (
+                    <>
+                        <Link style={styles.link} to="/login">Login</Link>
+                        <Link style={styles.link} to="/register">Register</Link>
+                    </>
+                )}
             </nav>
         </header>
     );
