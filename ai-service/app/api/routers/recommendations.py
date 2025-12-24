@@ -2,18 +2,11 @@
 from fastapi import APIRouter, Request
 from starlette.concurrency import run_in_threadpool
 
-from app.schemas import (
-    RecommendRequest,
-    RecommendResponse,
-    RecommendItem
-)
-from app.recommender import StudentProfile
+from app.schemas.recommendation import RecommendRequest, RecommendResponse, RecommendItem
+from app.services.recommender_service import StudentProfile
+
 
 router = APIRouter()
-
-@router.get("/health")
-def health():
-    return {"status": "ok"}
 
 @router.post("/recommend", response_model=RecommendResponse)
 async def recommend(req: RecommendRequest, request: Request):
