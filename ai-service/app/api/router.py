@@ -1,6 +1,6 @@
 # router.py
 from fastapi import APIRouter
-from app.endpoints import recommendations
+from app.api.routers import recommendations
 
 router = APIRouter()
 router.include_router(
