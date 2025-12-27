@@ -106,4 +106,4 @@ De volgende gegevens worden niet gelogd:
 - API keys
 - Volledige user input (zoals vrije tekst)
 
-#In plaats daarvan worden alleen metadata of samenvattingen gelogd (bijv. lengte van input).
+In plaats daarvan worden alleen metadata of samenvattingen gelogd (bijv. lengte van input).
