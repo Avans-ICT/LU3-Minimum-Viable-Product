@@ -90,3 +90,20 @@ logger.info("Recommender ready from artifact")
 logger.debug("TF-IDF matrix shape: %s", X_tfidf.shape)
 logger.warning("No recommender found, returning 503")
 logger.exception("Failed to initialize recommender")
+```
+### Uvicorn logging
+
+De standaard uvicorn loggers (uvicorn, uvicorn.error, uvicorn.access) zijn expliciet geconfigureerd zodat:
+- hun logniveau gelijk is aan de applicatie
+- dubbele logs worden voorkomen
+- startup, shutdown en request logs zichtbaar blijven
+
+### Security & privacy
+
+De volgende gegevens worden niet gelogd:
+- Wachtwoorden
+- JWT tokens
+- API keys
+- Volledige user input (zoals vrije tekst)
+
+#In plaats daarvan worden alleen metadata of samenvattingen gelogd (bijv. lengte van input).
