@@ -1,20 +1,37 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthController } from './api/interface/auth.controller';
-import { ModuleController } from './api/interface/module.controller';
 import { AuthService } from './api/application/auth.service';
-import { ModuleService } from './api/application/module.service';
-import { AuthRepository } from './api/infrastructure/auth.repository';
-import { ModuleRepository } from './api/infrastructure/module.repository';
-import { Module as ModuleEntity, ModuleSchema } from './api/domain/module.entity';
+import { AuthRepository } from './api/infrastructure/repositories/auth.repository';
+import { LoggerMiddleware } from './api/middleware/logger';
+import { MongooseModule } from '@nestjs/mongoose'
+import { User, UserSchema } from './api/infrastructure/schemas/user.schema';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from './jwt-strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: ModuleEntity.name, schema: ModuleSchema },
-    ]),
+    ConfigModule,
+    PassportModule,
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1h' },
+      }),
+    }),
   ],
-  controllers: [AuthController, ModuleController],
-  providers: [AuthService, ModuleService, AuthRepository, ModuleRepository],
+
+  controllers: [AuthController],
+  providers: [AuthService, AuthRepository, JwtStrategy],
 })
-export class AuthModule {}
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes(AuthController); // alleen voor AuthController
+  }
+}
