@@ -75,4 +75,3 @@ uvicorn main:app --reload --port 8000
 | `/ai-service` | (activate venv) | Activeert geïsoleerde omgeving |
 | `/ai-service` | `pip install fastapi uvicorn` | Installeert FastAPI |
 | `/ai-service` | `uvicorn main:app --reload --port 8000` | Start AI-service |
-

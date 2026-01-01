@@ -1,7 +1,4 @@
-import '../App.css'
-
 function Login() {
-  
     return (
         <>
             <h1>Home</h1>
