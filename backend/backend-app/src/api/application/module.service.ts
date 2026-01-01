@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ModuleRepository } from '../infrastructure/module.repository';
-import { Module } from '../domain/module.entity';
+import { ModuleRepository } from '../infrastructure/repositories/module.repository';
+import { Module } from '../domain/entities/module.entity';
 
 @Injectable()
 export class ModuleService {

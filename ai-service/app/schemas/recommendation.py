@@ -10,7 +10,7 @@ class RecommendRequest(BaseModel):
     alpha: float = 0.5
     beta: float = 0.5
 
-class RecommendItem(BaseModel):
+class Recommendation(BaseModel):
     module_name: str
     location: Optional[str] = None
     level: Optional[str] = None
@@ -21,4 +21,4 @@ class RecommendItem(BaseModel):
     constraint_reasons: Dict[str, str]
 
 class RecommendResponse(BaseModel):
-    results: list[RecommendItem]
+    results: list[Recommendation]

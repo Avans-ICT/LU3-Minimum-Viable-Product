@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Request
 from starlette.concurrency import run_in_threadpool
 
-from app.schemas.recommendation import RecommendRequest, RecommendResponse, RecommendItem
+from app.schemas.recommendation import RecommendRequest, RecommendResponse, Recommendation
 from app.services.recommender_service import StudentProfile
 
 
@@ -28,7 +28,7 @@ async def recommend(req: RecommendRequest, request: Request):
     )
 
     results = [
-        RecommendItem(
+        Recommendation(
             module_name=row["module_name"],
             location=row.get("location"),
             level=row.get("level"),

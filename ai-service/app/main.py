@@ -14,7 +14,6 @@ from app.services.recommender_service import ContentBasedRecommender
 
 logger = logging.getLogger(__name__)
 
-
 def _build_recommender_from_artifact(loaded: object) -> ContentBasedRecommender:
     # Case 1: already an object with recommend()
     if hasattr(loaded, "recommend"):
