@@ -5,6 +5,7 @@ import { registerDto } from '../domain/register.dto';
 import { JwtCookieInterceptor } from 'src/jwt-cookie.interceptor';
 import { AuthGuard } from '@nestjs/passport';
 import { CsrfGuard } from 'src/csrf-guard';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('/auth')
 export class AuthController {
@@ -27,6 +28,8 @@ export class AuthController {
     }
 
     //protected endpoint testing purposes only
+    
+    @SkipThrottle()
     @UseGuards(AuthGuard('jwt'), CsrfGuard)
     @Get('/me')
     getProfile(@Req() req) {

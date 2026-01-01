@@ -6,7 +6,7 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+  app.getHttpAdapter().getInstance().trustProxy = true;
   app.use(
     helmet({
       contentSecurityPolicy: false, // moet in productie anders
