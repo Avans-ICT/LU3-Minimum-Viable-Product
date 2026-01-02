@@ -42,3 +42,9 @@ export class RecommendationEventDoc {
   }>;
 }
 export const RecommendationEventSchema = SchemaFactory.createForClass(RecommendationEventDoc);
+
+// one recommendation event per request
+RecommendationEventSchema.index(
+  { request_id: 1 },
+  { unique: true }
+);
