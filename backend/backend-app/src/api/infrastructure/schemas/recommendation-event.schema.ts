@@ -1,27 +1,56 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 
 @Schema({ collection: "recommendation_events" })
-export class RecommendationEventDoc {
-  @Prop({ required: true }) event_type!: string;
-  @Prop({ required: true }) created_at!: Date;
+export class RecommendationEventDocument extends Document {
+  @Prop({ required: true })
+  event_type!: string;
 
-  @Prop({ type: Types.ObjectId, ref: "users" }) user_id?: Types.ObjectId;
-  @Prop({ required: true }) session_id!: string;
-  @Prop({ required: true }) request_id!: string;
+  @Prop({ required: true, default: () => new Date() })
+  created_at!: Date;
 
-  @Prop({ required: true }) algorithm!: string;
-  @Prop({ required: true }) model_version!: string;
+  @Prop({ type: Types.ObjectId, required: true, ref: "users" })
+  user_id!: Types.ObjectId;
 
-  @Prop({ required: true }) k!: number;
-  @Prop({ required: true }) alpha!: number;
-  @Prop({ required: true }) beta!: number;
-  @Prop({ required: true }) input_interests_text!: string;
+  @Prop({ required: true })
+  session_id!: string;
 
-  @Prop() constraints_location?: string;
-  @Prop() constraints_level?: string;
-  @Prop() constraints_studycredits_min?: number;
-  @Prop() constraints_studycredits_max?: number;
+  @Prop({ required: true })
+  request_id!: string;
+
+  @Prop({ required: true })
+  algorithm!: string;
+
+  @Prop({ required: true })
+  model_version!: string;
+
+  @Prop({ required: true })
+  k!: number;
+
+  @Prop({ required: true })
+  input_interests_text!: string;
+
+  @Prop({ required: false })
+  constraints_location?: string;
+
+  @Prop({ required: false })
+  constraints_level?: string;
+
+  @Prop({ required: false })
+  constraints_studycredits_min?: number;
+
+  @Prop({ required: false })
+  constraints_studycredits_max?: number;
+
+  // async fields
+  @Prop({ required: true, enum: ["PENDING", "COMPLETED", "FAILED"], default: "PENDING" })
+  status!: "PENDING" | "COMPLETED" | "FAILED";
+
+  @Prop({ required: false })
+  completed_at?: Date;
+
+  @Prop({ required: false })
+  error_message?: string;
 
   @Prop({
     type: [
@@ -33,6 +62,7 @@ export class RecommendationEventDoc {
       },
     ],
     required: true,
+    default: [],
   })
   results!: Array<{
     module_id: Types.ObjectId;
@@ -41,10 +71,10 @@ export class RecommendationEventDoc {
     reasons?: Record<string, unknown>;
   }>;
 }
-export const RecommendationEventSchema = SchemaFactory.createForClass(RecommendationEventDoc);
 
-// one recommendation event per request
-RecommendationEventSchema.index(
-  { request_id: 1 },
-  { unique: true }
+export const RecommendationEventSchema = SchemaFactory.createForClass(
+  RecommendationEventDocument,
 );
+
+// Idempotency: voorkom spam/duplicates op dezelfde requestId per user
+RecommendationEventSchema.index({ user_id: 1, request_id: 1 }, { unique: true });

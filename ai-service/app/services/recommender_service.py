@@ -1,9 +1,11 @@
+# ai-service/app/services/recommender_service.py
 from dataclasses import dataclass
 from typing import Optional, Dict, Any, Tuple, List
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+
 
 @dataclass
 class StudentProfile:
@@ -13,13 +15,14 @@ class StudentProfile:
     preferred_level: Optional[str] = None
     credit: Optional[int] = None
 
+
 class ContentBasedRecommender:
-    def __init__(self, tfidf, df:pd.DataFrame, X_tfidf):
+    def __init__(self, tfidf, df: pd.DataFrame, X_tfidf):
         self.tfidf = tfidf
         self.df = df.reset_index(drop=True)
         self.X_tfidf = X_tfidf
 
-    #TODO: scores accurater / eerlijker maken
+    # TODO: scores accurater / eerlijker maken
     def _constraint_score(self, row: pd.Series, profile: StudentProfile) -> Tuple[float, Dict[str, str]]:
         """
         Simpele constraint-score zoals in notebook:
@@ -28,7 +31,6 @@ class ContentBasedRecommender:
         score = 0.0
         reasons: Dict[str, str] = {}
 
-        # Als voorkeuren matchen met modules krijgen ze een beetje extra score
         if profile.preferred_location and "location" in row and pd.notna(row["location"]):
             if str(row["location"]).lower() == profile.preferred_location.lower():
                 score += 0.5
@@ -48,16 +50,13 @@ class ContentBasedRecommender:
                 pass
 
         return float(score), reasons
-    
+
     def recommend(self, profile: StudentProfile, k: int = 10, alpha: float = 0.5, beta: float = 0.5) -> pd.DataFrame:
         # Alpha + beta moet altijd gelijk zijn aan 1
         if not np.isclose(alpha + beta, 1.0):
             raise ValueError("Alpha + beta moet gelijk zijn aan 1")
-        
-        # Student Profile vectoriseren
-        profile_vec = self.tfidf.transform([profile.interests_text])
 
-        # Cosine similarity met alle modules
+        profile_vec = self.tfidf.transform([profile.interests_text])
         similarities = cosine_similarity(profile_vec, self.X_tfidf).flatten()
 
         records: List[Dict[str, Any]] = []
@@ -67,6 +66,8 @@ class ContentBasedRecommender:
             final_score = alpha * c_score + beta * cstr_score
 
             records.append({
+                # IMPORTANT for backend integration (ERD requires modules._id reference)
+                "module_id": row.get("module_id") or row.get("_id") or row.get("id"),
                 "module_name": row.get("name", ""),
                 "location": row.get("location", None),
                 "level": row.get("level", None),
