@@ -1,3 +1,4 @@
+# ai-service/app/core/config.py
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
@@ -11,9 +12,17 @@ class Settings(BaseSettings):
     api_prefix: str = Field(default="")  # e.g. "/api" if you want versioning later
     cors_origins: str = Field(default="*")  # comma-separated or "*" for dev
 
+    # Security (internal service)
+    ai_service_api_key: str = Field(default="")  # set in .env to enable X-API-Key check
+
     # ML
     model_artifact_path: str = Field(default="ai-service/ml/artifacts/current")
     model_version: str = Field(default="baseline")
+
+    # Optional scoring defaults (used by integration endpoint)
+    default_alpha: float = Field(default=0.5)
+    default_beta: float = Field(default=0.5)
+    algorithm_name: str = Field(default="content_based")
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -24,5 +33,4 @@ class Settings(BaseSettings):
 
 
 def get_settings() -> Settings:
-    # simple singleton-ish cache (FastAPI will reuse module)
     return Settings()

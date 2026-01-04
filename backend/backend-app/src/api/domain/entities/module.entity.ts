@@ -1,37 +1,20 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
-@Schema({ collection: 'modules' })
-export class Module extends Document {
-  @Prop({ required: true, unique: true })
-  Id: number;
-
-  @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
-  shortdescription: string;
-
-  @Prop({ required: true })
-  description: string;
-
-  @Prop({ required: true })
-  content: string;
-
-  @Prop({ required: true })
-  studycredit: number;
-
-  @Prop({ required: true })
-  location: string;
-
-  @Prop({ required: true })
-  contact_id: number;
-
-  @Prop({ required: true })
-  level: string;
-
-  @Prop({ required: true })
-  learningoutcomes: string;
+export class ModuleEntity {
+  constructor(
+    public readonly id: string,              // Mongo _id als string
+    public readonly name: string,
+    public readonly shortdescription: string,
+    public readonly description: string,
+    public readonly content: string,
+    public readonly studycredit: number,
+    public readonly location: string,
+    public readonly contact_id: string,
+    public readonly level: string,
+    public readonly learningoutcomes: string[],
+    public readonly module_tags: string[],
+    public readonly popularity_score: number,
+    public readonly estimated_difficulty: string,
+    public readonly available_spots: number,
+    public readonly start_date: Date,
+    public readonly updated_at: Date,
+  ) {}
 }
-
-export const ModuleSchema = SchemaFactory.createForClass(Module);

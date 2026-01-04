@@ -1,29 +1,26 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ModuleRepository } from '../infrastructure/repositories/module.repository';
-import { Module } from '../domain/entities/module.entity';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ModuleRepository } from "../infrastructure/repositories/module.repository";
+import { ModuleEntity } from "../domain/entities/module.entity";
+import { toModuleEntity } from "../infrastructure/mappers/module.mapper";
 
 @Injectable()
 export class ModuleService {
   constructor(private readonly moduleRepository: ModuleRepository) {}
 
-  async getModuleById(id: number): Promise<Module> {
-    const module = await this.moduleRepository.findById(id);
-    
-    if (!module) {
+  async getModuleById(id: string): Promise<ModuleEntity> {
+    const doc = await this.moduleRepository.findById(id);
+
+    if (!doc) {
       throw new NotFoundException(`Module with ID ${id} not found`);
     }
-    
-    return module;
+
+    return toModuleEntity(doc);
   }
 
+  async getAllModules(): Promise<ModuleEntity[]> {
+    const docs = await this.moduleRepository.findAll();
+    if (docs.length === 0) throw new NotFoundException("No modules found");
 
-  async getAllModules(): Promise<Module[] | null>{
-    const module = await this.moduleRepository.Allmodules();
-
-    if (!module) {
-      throw new NotFoundException(`No modules found`);
-    }
-    
-    return module;
+    return docs.map(toModuleEntity);
   }
 }
