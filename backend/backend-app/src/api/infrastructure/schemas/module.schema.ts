@@ -5,9 +5,6 @@ export type ModuleDocument = HydratedDocument<Module>;
 
 @Schema({ collection: "modules" })
 export class Module {
-  @Prop({ name: "id", required: true, unique: true })
-  legacyId!: number;
-
   @Prop({ required: true })
   name!: string;
 
@@ -27,17 +24,31 @@ export class Module {
   location!: string;
 
   @Prop({ required: true })
-  contact_id!: number;
+  contact_id!: string;
 
   @Prop({ required: true })
   level!: string;
 
+  @Prop({ type: [String], required: true })
+  learningoutcomes!: string[];
+
+  @Prop({ type: [String], required: true })
+  module_tags!: string[];
+
   @Prop({ required: true })
-  learningoutcomes!: string;
+  popularity_score!: number;
+
+  @Prop({ required: true })
+  estimated_difficulty!: string;
+
+  @Prop({ required: true })
+  available_spots!: number;
+
+  @Prop({ required: true })
+  start_date!: Date;
+
+  @Prop({ required: true })
+  updated_at!: Date;
 }
 
 export const ModuleSchema = SchemaFactory.createForClass(Module);
-
-// map legacyId <-> database field "id" (of "Id")
-ModuleSchema.set("toObject", { virtuals: true });
-ModuleSchema.set("toJSON", { virtuals: true });
