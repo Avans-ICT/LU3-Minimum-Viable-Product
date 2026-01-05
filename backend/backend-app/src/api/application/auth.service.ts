@@ -1,9 +1,10 @@
 import { Injectable, ConflictException, NotFoundException, UnauthorizedException, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthRepository } from '../infrastructure/repositories/auth.repository';
-import { registerDto } from '../domain/dtos/register.dto';
-import { loginDto } from '../domain/dtos/login.dto';
+import { RegisterDto } from '../domain/dtos/register.dto';
+import { LoginDto } from '../domain/dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import {AuthResponseDto} from '../domain/dtos/authresponse.dto'
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     ) { }
 
     //gebruikersgegevens valideren
-    async login(loginDto: loginDto) {
+    async login(loginDto: LoginDto): Promise<AuthResponseDto> {
         //user ophalen uit de database
         this.logger.log(`Login attempt for ${loginDto.email}`);
         const user = await this.authRepository.findByEmail(loginDto.email);
@@ -41,19 +42,13 @@ export class AuthService {
         this.logger.log(`Login successful for ${loginDto.email} (userId: ${user._id})`);
         return {
             accessToken: accessToken,
-            refreshToken: refreshToken,
-            user: {
-                id: user._id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            },
+            refreshToken: refreshToken
         };
     }
 
 
     //gebruiker aanmaken als hij nieuw is.
-    async register(registerDto: registerDto) {
+    async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
         // check of user al bestaat
         this.logger.log(`Register attempt for ${registerDto.email}`);
         const existing = await this.authRepository.findByEmail(registerDto.email);
@@ -80,13 +75,7 @@ export class AuthService {
 
         return {
             accessToken: accessToken,
-            refreshToken: refreshToken,
-            user: {
-                id: user._id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            },
+            refreshToken: refreshToken
         };
     }
 
@@ -107,7 +96,7 @@ export class AuthService {
     }
 
     //uitloggen
-    async logout(userId?: string) {
+    async logout(userId?: string) : Promise<void>{
         this.logger.log(`Logout attempt for ${userId}`);
         if (!userId) {
             this.logger.warn('Logout attempt with no userId provided');
@@ -119,7 +108,7 @@ export class AuthService {
     }
 
     //token refreshen
-    async refresh(refreshToken: string) {
+    async refresh(refreshToken: string): Promise<AuthResponseDto>  {
         if (!refreshToken) {
             this.logger.warn('Refresh failed: no refresh token provided');
             throw new UnauthorizedException();
