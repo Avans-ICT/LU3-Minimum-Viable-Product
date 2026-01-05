@@ -5,50 +5,55 @@ export default function Header() {
     const { user, loading, logout } = useAuth();
     
     return (
-        <header>
-            <h1 style={{ margin: 0 }}>Mijn App</h1>
-            <nav>
-                {user ? (
-                    <>
-                        <Link to="/home">Home</Link>
-                        <Link to="/allmodules">Modules</Link>
-                        <Link to="/">Home</Link>
-                        <button onClick={logout}>Logout</button>
-                    </>
-                ) : (
-                    <>
-                        <Link to="/login">Login</Link>
-                        <Link to="/register">Register</Link>
-                    </>
-                )}
-            </nav>
-        </header>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-gray5">
+            <div className="container-fluid">
+                <Link className="navbar-brand" to="/">
+                    Avans KeuzeCompas
+                </Link>
+
+                <div className="collapse navbar-collapse show">
+                    <ul className="navbar-nav ms-auto">
+                        {user ? (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/home">
+                                        Home
+                                    </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/allmodules">
+                                        Modules
+                                    </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <button
+                                        className="btn btn-outline-light ms-2"
+                                        onClick={logout}
+                                    >
+                                        Logout
+                                    </button>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/login">
+                                        Login
+                                    </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/register">
+                                        Register
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </nav>
     );
 }
-
-
-
-// export default function Header() {
-//     return (
-
-
-//         <nav className="navbar navbar-expand-lg bg-body-tertiary">
-//             <div className="container-fluid">
-//                 <a className="navbar-brand" href="#">Navbar</a>
-//                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-//                     <span className="navbar-toggler-icon"></span>
-//                 </button>
-//                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-//                     <div className="navbar-nav">
-//                         <a className="nav-link active" aria-current="page" href="/home">Home</a>
-//                         <a className="nav-link active" href="/allmodules">Modules</a>
-//                         <a className="nav-link active" href="#">Favorites</a>
-  
-//                     </div>
-//                 </div>
-//             </div>
-//         </nav>
-
-
-//     );
-// }

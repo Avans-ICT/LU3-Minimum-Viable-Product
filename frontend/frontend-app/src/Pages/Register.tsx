@@ -91,52 +91,101 @@ function Register() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Register</h1>
-
-            <input
-                type="text"
-                placeholder="First Name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-            />
-            <input
-                type="text"
-                placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Wachtwoord"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Herhaal Wachtwoord"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-            />
-
-            <button type="submit" disabled={loading}>
-                {loading ? "Registreren..." : "Registreren"}
-            </button>
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>Registratie succesvol!</p>}
-        </form>
+        <div className="container">
+            <div className="row justify-content-center mt-5">
+                <div className="col-md-8 col-lg-6">
+                    <div className="card shadow">
+                        <div className="card-body p-4">
+                            <h1 className="card-title text-center mb-4">Register</h1>
+                            <form onSubmit={handleSubmit}>
+                                <div className="row">
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor="firstName" className="form-label">Voornaam</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="firstName"
+                                            placeholder="Voornaam"
+                                            value={firstName}
+                                            onChange={(e) => setFirstName(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <label htmlFor="lastName" className="form-label">Achternaam</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="lastName"
+                                            placeholder="Achternaam"
+                                            value={lastName}
+                                            onChange={(e) => setLastName(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        id="email"
+                                        placeholder="Email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">Wachtwoord</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="password"
+                                        placeholder="Wachtwoord"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="confirmPassword" className="form-label">Herhaal Wachtwoord</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="confirmPassword"
+                                        placeholder="Herhaal Wachtwoord"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                {error && (
+                                    <div className="alert alert-danger" role="alert">
+                                        {error}
+                                    </div>
+                                )}
+                                {success && (
+                                    <div className="alert alert-success" role="alert">
+                                        Registratie succesvol!
+                                    </div>
+                                )}
+                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                                    {loading ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Registreren...
+                                        </>
+                                    ) : (
+                                        "Registreren"
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
 
