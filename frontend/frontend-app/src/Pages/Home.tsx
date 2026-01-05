@@ -1,4 +1,5 @@
-function Login() {
+function Home() {
+  
     return (
         <>
             <h1>Home</h1>
@@ -6,4 +7,4 @@ function Login() {
     )
 }
 
-export default Login
+export default Home

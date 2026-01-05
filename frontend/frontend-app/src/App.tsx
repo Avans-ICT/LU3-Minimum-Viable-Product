@@ -6,23 +6,28 @@ import NotFound from "./Pages/NotFound.tsx"
 import SingleModulePage from "./Pages/SingleModulePage.tsx"
 import Header from "./Components/Header.tsx"
 import ModulePage from "./Pages/ModulePage/ModulePage.tsx";
+import { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
+import { AuthProvider } from "./auth/AuthContext.tsx";
 
 function App() {
     return (
-        <>      
-            <Router>
-                <Header />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="*" element={<NotFound />}/>
-                    <Route path="/module/:id" element={<SingleModulePage />} />
-                    <Route path="/allmodules" element={<ModulePage />} />
-                </Routes>
-            </Router>
+        <>
+            <AuthProvider> 
+                <Router>
+                    <Header />
+                        <Routes>
+                            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="*" element={<ProtectedRoute><NotFound /></ProtectedRoute>}/>
+                            <Route path="/module/:id" element={<ProtectedRoute><SingleModulePage /></ProtectedRoute>} />
+                            <Route path="/allmodules" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
+                        </Routes>
+                </Router>
+            </AuthProvider>   
         </>
+            
     )
 }
 

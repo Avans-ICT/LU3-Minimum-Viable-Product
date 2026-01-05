@@ -12,7 +12,7 @@ import { ModulesModule } from "./module.module";
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          ttl: 4000,
+          ttl: 2000,
           limit: 6,
         },
       ],
