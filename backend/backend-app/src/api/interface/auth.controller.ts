@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, UseInterceptors, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from '../application/auth.service';
-import { loginDto } from '../domain/dtos/login.dto';
-import { registerDto } from '../domain/dtos/register.dto';
+import { LoginDto } from '../domain/dtos/login.dto';
+import { RegisterDto } from '../domain/dtos/register.dto';
 import { JwtCookieInterceptor } from '../../jwt-cooki.interceptor';
 import { AuthGuard } from '@nestjs/passport';
 import { CsrfGuard } from '../../csrf-guard';
@@ -16,14 +16,14 @@ export class AuthController {
     //inloggen
     @UseInterceptors(JwtCookieInterceptor)
     @Post('/login')
-    async Login(@Body() loginDto: loginDto) {
+    async Login(@Body() loginDto: LoginDto) {
         return await this.authService.login(loginDto)
     }
 
     //registreren
     @UseInterceptors(JwtCookieInterceptor)
     @Post('/register')
-    async Register(@Body() registerDto: registerDto) {
+    async Register(@Body() registerDto: RegisterDto) {
         return await this.authService.register(registerDto);
     }
 

@@ -1,30 +1,35 @@
-import { Injectable, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, UnauthorizedException, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthRepository } from '../infrastructure/repositories/auth.repository';
-import { registerDto } from '../domain/dtos/register.dto';
-import { loginDto } from '../domain/dtos/login.dto';
+import { RegisterDto } from '../domain/dtos/register.dto';
+import { LoginDto } from '../domain/dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import {AuthResponseDto} from '../domain/dtos/authresponse.dto'
 
 @Injectable()
 export class AuthService {
+    private readonly logger = new Logger(AuthService.name);
     constructor(
         private readonly authRepository: AuthRepository,
         private readonly jwtService: JwtService
     ) { }
 
     //gebruikersgegevens valideren
-    async login(loginDto: loginDto) {
+    async login(loginDto: LoginDto): Promise<AuthResponseDto> {
         //user ophalen uit de database
+        this.logger.log(`Login attempt for ${loginDto.email}`);
         const user = await this.authRepository.findByEmail(loginDto.email);
 
         //kijken of de user bestaat
         if (!user) {
+            this.logger.warn(`Login failed: user not found for ${loginDto.email}`);
             throw new NotFoundException('Invalid credentials');
         }
 
         //wachtwoord vergelijken met wachtwoordhash in database
         const isValid = await bcrypt.compare(loginDto.password, user.password);
         if (!isValid) {
+            this.logger.warn(`Login failed: invalid password for ${loginDto.email}`);
             throw new UnauthorizedException('Invalid credentials');
         }
 
@@ -34,24 +39,21 @@ export class AuthService {
         const hashedRefresh = await bcrypt.hash(refreshToken, 10);
         await this.authRepository.updateRefreshToken(user._id.toString(), hashedRefresh);
 
+        this.logger.log(`Login successful for ${loginDto.email} (userId: ${user._id})`);
         return {
             accessToken: accessToken,
-            refreshToken: refreshToken,
-            user: {
-                id: user._id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            },
+            refreshToken: refreshToken
         };
     }
 
 
     //gebruiker aanmaken als hij nieuw is.
-    async register(registerDto: registerDto) {
+    async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
         // check of user al bestaat
+        this.logger.log(`Register attempt for ${registerDto.email}`);
         const existing = await this.authRepository.findByEmail(registerDto.email);
         if (existing) {
+            this.logger.warn(`Register failed: user already exists for ${registerDto.email}`);
             throw new ConflictException('User already exists');
         }
 
@@ -69,16 +71,11 @@ export class AuthService {
             user._id.toString(),
             await bcrypt.hash(refreshToken, 10),
         );
+        this.logger.log(`Register successful for ${registerDto.email} (userId: ${user._id})`);
 
         return {
             accessToken: accessToken,
-            refreshToken: refreshToken,
-            user: {
-                id: user._id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-            },
+            refreshToken: refreshToken
         };
     }
 
@@ -99,15 +96,21 @@ export class AuthService {
     }
 
     //uitloggen
-    async logout(userId?: string) {
-        if (!userId) return;
+    async logout(userId?: string) : Promise<void>{
+        this.logger.log(`Logout attempt for ${userId}`);
+        if (!userId) {
+            this.logger.warn('Logout attempt with no userId provided');
+            return;
+        }
 
         await this.authRepository.updateRefreshToken(userId, null);
+        this.logger.log(`Logout successful for ${userId}`);
     }
 
     //token refreshen
-    async refresh(refreshToken: string) {
+    async refresh(refreshToken: string): Promise<AuthResponseDto>  {
         if (!refreshToken) {
+            this.logger.warn('Refresh failed: no refresh token provided');
             throw new UnauthorizedException();
         }
 
@@ -115,11 +118,13 @@ export class AuthService {
 
         const user = await this.authRepository.findById(payload.sub);
         if (!user?.refreshToken) {
+            this.logger.warn(`Refresh failed: no refresh token stored for userId ${payload.sub}`);
             throw new UnauthorizedException();
         }
 
         const valid = await bcrypt.compare(refreshToken, user.refreshToken);
         if (!valid) {
+            this.logger.warn(`Refresh failed: invalid refresh token for userId ${user._id}`);
             throw new UnauthorizedException();
         }
 
@@ -137,6 +142,7 @@ export class AuthService {
             user._id.toString(),
             await bcrypt.hash(newRefreshToken, 10),
         );
+        this.logger.log(`Refresh successful for userId ${user._id}`);
 
         return {
             accessToken: newAccessToken,
