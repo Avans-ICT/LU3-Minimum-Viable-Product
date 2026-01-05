@@ -1,15 +1,24 @@
 import React from 'react';
 
 interface singleModuleProps {
+    id: string;
     name: string;
+    shortdescription: string;
+    description: string;
+    content: string;
     studycredit: number;
     location: string;
+    contact_id: number;
     level: string;
-    shortdescription: string
-    id: number
+    learningoutcomes: string;
+    module_tags: string[];
+    popularity_score: number;
+    estimated_difficulty: number;
+    available_spots: number;
+    start_date: string;
 }
 
-const SingleModule: React.FC<singleModuleProps> = ({ name, studycredit, location, level, shortdescription, id }) => {
+const SingleModule: React.FC<singleModuleProps> = ({ name, studycredit,shortdescription, id,}) => {
     return (
         <div className="card" style={{ width: '18rem' }}>
             <div className="card-body">

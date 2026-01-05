@@ -8,6 +8,8 @@ import Header from "./Components/Header.tsx"
 import ModulePage from "./Pages/ModulePage/ModulePage.tsx";
 import { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
 import { AuthProvider } from "./auth/AuthContext.tsx";
+import "./Colors.css"
+
 
 function App() {
     return (

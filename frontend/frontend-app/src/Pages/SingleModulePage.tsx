@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 
 // Define your module type based on your backend response
 interface Module {
-  _id: string;
-  id: number;
+  id: string;
   name: string;
   shortdescription: string;
   description: string;
@@ -14,7 +13,13 @@ interface Module {
   contact_id: number;
   level: string;
   learningoutcomes: string;
+  module_tags: string[];
+  popularity_score: number;
+  estimated_difficulty: number;
+  available_spots: number;
+  start_date: string;
 }
+
 
 export default function ModulePage() {
     const { id } = useParams<{ id: string }>();
@@ -77,10 +82,12 @@ export default function ModulePage() {
             <h1 className="text-3xl font-bold mb-4">{module.name}</h1>
             <div className="bg-white shadow rounded-lg p-6">
                 <p className="text-gray-700 mb-4">{module.description}</p>
+                <br />
+                <p className="text-gray-700 mb-4">{module.module_tags}</p>
+                <br />
         
                 <div className="space-y-2">
                     <p><strong>ID:</strong> {module.id}</p>
-                    {/* Add other module properties here */}
                 </div>
             </div>
         </div>

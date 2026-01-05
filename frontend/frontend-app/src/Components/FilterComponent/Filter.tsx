@@ -40,7 +40,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
             searchTerm: '',
             location: '',
             level: '',
-            credits: 0
+            credits: 15
         });
     };
 
@@ -64,8 +64,8 @@ function Filters({ filters, setFilters }: FiltersProps) {
                             className="form-check-input" 
                             type="checkbox" 
                             id="ec15"
-                            checked={filters.credits === 15}
-                            onChange={() => handleCreditsChange(15)}
+                            checked={filters.credits === 30}
+                            onChange={() => handleCreditsChange(30)}
                         />
                         <label className="form-check-label" htmlFor="ec15">15 EC</label>
                     </div>
@@ -76,8 +76,8 @@ function Filters({ filters, setFilters }: FiltersProps) {
                             className="form-check-input" 
                             type="checkbox" 
                             id="ec30"
-                            checked={filters.credits === 30}
-                            onChange={() => handleCreditsChange(30)}
+                            checked={filters.credits === 15}
+                            onChange={() => handleCreditsChange(15)}
                         />
                         <label className="form-check-label" htmlFor="ec30">30 EC</label>
                     </div>

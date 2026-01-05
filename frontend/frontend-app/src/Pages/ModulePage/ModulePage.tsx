@@ -6,7 +6,7 @@ import Filters from "../../Components/FilterComponent/Filter"
 import type { FilterState } from "../../Components/FilterComponent/Filter"
 
 interface Module {
-  id: number;
+  id: string;
   name: string;
   shortdescription: string;
   description: string;
@@ -16,6 +16,11 @@ interface Module {
   contact_id: number;
   level: string;
   learningoutcomes: string;
+  module_tags: string[];
+  popularity_score: number;
+  estimated_difficulty: number;
+  available_spots: number;
+  start_date: string;
 }
 
 function ModulePage() {
@@ -91,8 +96,17 @@ function ModulePage() {
                                         studycredit={module.studycredit}
                                         level={module.level}
                                         shortdescription={module.shortdescription}
+                                        description={module.description}
                                         id={module.id}
-                                    />
+                                        content={module.content}
+                                        contact_id={module.contact_id}
+                                        learningoutcomes={module.learningoutcomes}
+                                        popularity_score={module.popularity_score}
+                                        module_tags={module.module_tags}
+                                        estimated_difficulty={module.estimated_difficulty}
+                                        available_spots={module.available_spots}
+                                        start_date={module.start_date}
+                                        />
                                 </div>
                             ))}
                         </div>
