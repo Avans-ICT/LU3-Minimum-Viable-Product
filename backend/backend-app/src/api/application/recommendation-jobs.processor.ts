@@ -56,10 +56,18 @@ export class RecommendationJobsProcessor extends WorkerHost {
       }> = [];
 
       for (const r of aiRes.results) {
-        const legacyId = Number(r.moduleId);
+        const moduleId =
+          (r as any).module_id ??
+          (r as any).moduleId ??
+          (r as any)._id;
 
-        const mod = await this.moduleModel.findOne({ Id: legacyId }, { _id: 1 }).lean();
-        if (!mod?._id) throw new Error(`Module ${legacyId} not found`);
+        if (!moduleId) {
+          throw new Error("AI result missing module_id/moduleId/_id");
+        }
+
+        // Optioneel: check dat module bestaat (handig om problemen vroeg te zien)
+        const mod = await this.moduleModel.findById(moduleId, { _id: 1 }).lean();
+        if (!mod?._id) throw new Error(`Module ${moduleId} not found`);
 
         mappedResults.push({
           module_id: mod._id,

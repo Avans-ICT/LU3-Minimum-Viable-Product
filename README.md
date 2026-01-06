@@ -74,6 +74,6 @@ uvicorn main:app --reload --port 8000
 | `/frontend/frontend-app` | `npm install react-router-dom` | Installeert router |
 | `/frontend/frontend-app` | `npm run dev` | Start frontend server |
 | `/ai-service` | `python -m venv venv` | Maakt virtualenv |
-| `/ai-service` | (activate venv) | Activeert geïsoleerde omgeving |
+| `/ai-service` | .\venv\Scripts\activate | Activeert geïsoleerde omgeving |
 | `/ai-service` | `pip install fastapi uvicorn` | Installeert FastAPI |
 | `/ai-service` | `uvicorn main:app --reload --port 8000` | Start AI-service |
