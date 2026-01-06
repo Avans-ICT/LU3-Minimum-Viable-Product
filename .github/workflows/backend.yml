@@ -2,12 +2,16 @@ name: Backend CI/CD Pipeline
 
 on:
   push:
-    branches: [main, jurian]
-        paths:
+    branches: 
+      - main 
+      - jurian
+    paths:
       - 'backend/backend-app/**'
+  
   pull_request:
-    branches: [main]
-        paths:
+    branches: 
+      - main
+    paths:
       - 'backend/backend-app/**'
 
 jobs:
