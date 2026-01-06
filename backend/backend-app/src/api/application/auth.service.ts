@@ -36,8 +36,10 @@ export class AuthService {
         const accessToken = this.signAccessToken(user._id.toString(), user.email);
         const refreshToken = this.signRefreshToken(user._id.toString(), user.email);
 
-        const hashedRefresh = await bcrypt.hash(refreshToken, 10);
-        await this.authRepository.updateRefreshToken(user._id.toString(), hashedRefresh);
+        await this.authRepository.updateRefreshToken(
+            user._id.toString(),
+            await bcrypt.hash(refreshToken, 10),
+        );
 
         this.logger.log(`Login successful for ${loginDto.email} (userId: ${user._id})`);
         return {
