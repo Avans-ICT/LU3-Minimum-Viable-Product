@@ -3,8 +3,12 @@ name: Backend CI/CD Pipeline
 on:
   push:
     branches: [main, jurian]
+        paths:
+      - 'backend/backend-app/**'
   pull_request:
     branches: [main]
+        paths:
+      - 'backend/backend-app/**'
 
 jobs:
   ci:
@@ -14,6 +18,10 @@ jobs:
     strategy:
       matrix:
         node-version: [20]
+    
+    defaults:
+      run:
+        working-directory: backend/backend-app
 
     steps:
       - name: Checkout code
@@ -36,11 +44,16 @@ jobs:
         run: npm run test:integration
 
 
+
   cd:
     name: CD - Deploy
-    needs: ci                
+    needs: ci
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+
+    defaults:
+      run:
+        working-directory: backend/backend-app
 
     steps:
       - name: Checkout code
