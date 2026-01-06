@@ -11,7 +11,7 @@ export class ValidationExceptionFilter implements ExceptionFilter {
         const request = ctx.getRequest<Request>();
         const status = exception.getStatus();
 
-        this.logger.warn(`Validation failed for ${request.url}: ${JSON.stringify(exception.getResponse())}`);
+        this.logger.error(`Validation failed for ${request.url}: ${JSON.stringify(exception.getResponse())}`);
 
         response.status(status).json(exception.getResponse());
     }
