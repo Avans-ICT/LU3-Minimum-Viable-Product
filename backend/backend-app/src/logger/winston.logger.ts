@@ -2,8 +2,13 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import * as path from 'path';
 import { TransformableInfo } from 'logform';
+import * as fs from 'fs';
 
 const logDir = path.join(process.cwd(), 'logs');
+
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
 
 const CONSOLE_CONTEXTS = [
   'NestFactory',
