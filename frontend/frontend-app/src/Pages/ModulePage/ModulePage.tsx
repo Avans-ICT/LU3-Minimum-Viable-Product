@@ -31,9 +31,9 @@ function ModulePage() {
     // Move filters state here (before early returns)
     const [filters, setFilters] = useState<FilterState>({
         searchTerm: '',
-        location: '',
-        level: '',
-        credits: 0
+        location: [],
+        level: [],
+        credits: []
     });
 
     useEffect(() => {
@@ -51,23 +51,26 @@ function ModulePage() {
         fetchModules();
     }, []);
 
-    // Filter logic
     const Modulefilter = modules.filter((module) => {
         // Location filter
-        if (filters.location && module.location !== filters.location) {
-            return false;
+        if (filters.location.length > 0 && !filters.location.includes(module.location)) {
+            if (module.location === "Den Bosch en Tilburg" &&  (filters.location.includes("Tilburg") || filters.location.includes("Den Bosch"))) {
+
+            } else {
+                return false; 
+            }
         }
-        
+
         // Level filter
-        if (filters.level && module.level !== filters.level) {
+        if (filters.level.length > 0 && !filters.level.includes(module.level)) {
             return false;
         }
-        
+
         // Credits filter
-        if (filters.credits && module.studycredit === filters.credits) {
+        if (filters.credits.length > 0 && !filters.credits.includes(module.studycredit)) {
             return false;
         }
-        
+
         return true;
     });
 
