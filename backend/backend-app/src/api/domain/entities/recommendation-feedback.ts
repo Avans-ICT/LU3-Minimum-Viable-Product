@@ -1,16 +1,17 @@
-export type FeedbackType = "like" | "dislike" | "rating";
+import { Types } from "mongoose";
 
 export class RecommendationFeedback {
-  constructor(
-    public readonly id: string,
-    public readonly createdAt: Date,
+  _id!: Types.ObjectId;
 
-    public readonly moduleId: string,      // ref modules._id
-    public readonly feedbackType: FeedbackType,
-    public readonly value: number,
+  createdAt!: Date;
 
-    public readonly eventId: string,       // ref recommendation_events._id
-    public readonly sessionId: string,
-    public readonly userId?: string,       // ref users._id
-  ) {}
+  eventId!: Types.ObjectId;
+  userId!: Types.ObjectId;
+
+  sessionId?: string;
+
+  moduleId!: Types.ObjectId;
+
+  feedbackType!: string;
+  value!: number;
 }
