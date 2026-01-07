@@ -80,8 +80,8 @@ function Login() {
                                 <div className="mb-3">
                                     <a href="/register">Nog geen acount?</a>
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">
-                                    Inloggen
+                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                                    {loading ? "Even geduld..." : "Inloggen"}
                                 </button>
                             </form>
                         </div>
