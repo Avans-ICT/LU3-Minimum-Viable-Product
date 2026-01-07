@@ -2,7 +2,7 @@ import { Module as NestModule } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { HttpModule } from "@nestjs/axios";
 import { BullModule } from "@nestjs/bullmq";
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 import { RecommendationEventController } from "./api/interface/recommendation-event.controller";
 import { RecommendationEventService } from "./api/application/recommendation-event.service";
@@ -15,6 +15,11 @@ import {
 import { AiServiceClient } from "./api/infrastructure/http/ai-service.client";
 
 import { Module as ModuleEntity, ModuleSchema } from "./api/infrastructure/schemas/module.schema";
+import {
+  RecommendationFeedbackDocument,
+  RecommendationFeedbackSchema,
+} from "./api/infrastructure/schemas/recommendation-feedback.schema";
+import { RecommendationFeedbackRepository } from "./api/infrastructure/repositories/recommendation-feedback.repository";
 
 @NestModule({
   imports: [
@@ -22,16 +27,17 @@ import { Module as ModuleEntity, ModuleSchema } from "./api/infrastructure/schem
 
     MongooseModule.forFeature([
       { name: RecommendationEventDocument.name, schema: RecommendationEventSchema },
-      { name: ModuleEntity.name, schema: ModuleSchema }, // ✅ module model beschikbaar voor processor
+      { name: ModuleEntity.name, schema: ModuleSchema },
+      { name: RecommendationFeedbackDocument.name, schema: RecommendationFeedbackSchema },
     ]),
 
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        const host = config.get<string>('REDIS_HOST') || 'localhost';
-        const port = Number(config.get<number>('REDIS_PORT')) || 6379;
-        const password = config.get<string>('REDIS_PASSWORD');
+        const host = config.get<string>("REDIS_HOST") || "localhost";
+        const port = Number(config.get<number>("REDIS_PORT")) || 6379;
+        const password = config.get<string>("REDIS_PASSWORD");
 
         const connection: any = { host, port };
 
@@ -49,6 +55,7 @@ import { Module as ModuleEntity, ModuleSchema } from "./api/infrastructure/schem
   providers: [
     RecommendationEventService,
     RecommendationEventRepository,
+    RecommendationFeedbackRepository,
     RecommendationJobsProcessor,
     AiServiceClient,
   ],
