@@ -5,13 +5,15 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { winstonLogger } from './logger/winston.logger';
 import { ValidationExceptionFilter } from './logger/validationerror.logger';
-
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
         logger: winstonLogger,
     });
   
+    const configService = app.get(ConfigService);
+
     app.useGlobalFilters(new ValidationExceptionFilter());
     app.getHttpAdapter().getInstance().trustProxy = true;
     app.use(
@@ -23,8 +25,8 @@ async function bootstrap() {
 
     //CORS voor frontend
     app.enableCors({
-        origin: 'http://localhost:5173', // frontend URL
-        credentials: true,               // indien je cookies/sessies gebruikt
+        origin: configService.get<string>("FRONTEND_URL") || 'http://localhost:5173', // frontend URL
+        credentials: true,
     });
 
     app.useGlobalPipes(
