@@ -129,7 +129,7 @@ export default function ModulePage() {
                 <div className="col-md-6">
                   <p className="mb-2">
                     <strong>Available Spots:</strong> 
-                    <span className={`ms-2 ${module.available_spots > 10 ? 'text-success' : 'text-warning'}`}>
+                    <span className={"ms-2"}>
                       {module.available_spots}
                     </span>
                   </p>
@@ -150,11 +150,6 @@ export default function ModulePage() {
                     <strong>Popularity Score:</strong> {module.popularity_score}
                   </p>
                 </div>
-                <div className="col-md-6">
-                  <p className="mb-2">
-                    <strong>Module ID:</strong> <code>{module.id}</code>
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -173,20 +168,6 @@ export default function ModulePage() {
             <div className="card-body">
               <h5 className="card-title mb-3">Learning Outcomes</h5>
               <p className="card-text">{module.learningoutcomes}</p>
-            </div>
-          </div>
-
-
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title mb-3">Tags</h5>
-              <div className="d-flex flex-wrap gap-2">
-                {module.module_tags.map((tag, index) => (
-                  <span key={index} className="badge bg-secondary">
-                    {tag}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         </div>

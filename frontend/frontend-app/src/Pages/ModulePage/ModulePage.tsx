@@ -56,7 +56,9 @@ function ModulePage() {
         if (filters.location.length > 0 && !filters.location.includes(module.location)) {
             if (module.location === "Den Bosch en Tilburg" &&  (filters.location.includes("Tilburg") || filters.location.includes("Den Bosch"))) {
 
-            } else {
+            } else if (module.location === "Breda en Den Bosch" &&  (filters.location.includes("Breda") || filters.location.includes("Den Bosch"))) {
+
+            } else{
                 return false; 
             }
         }
