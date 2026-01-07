@@ -2,6 +2,7 @@ import { Module as NestModule } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { HttpModule } from "@nestjs/axios";
 import { BullModule } from "@nestjs/bullmq";
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { RecommendationEventController } from "./api/interface/recommendation-event.controller";
 import { RecommendationEventService } from "./api/application/recommendation-event.service";
@@ -24,13 +25,24 @@ import { Module as ModuleEntity, ModuleSchema } from "./api/infrastructure/schem
       { name: ModuleEntity.name, schema: ModuleSchema }, // ✅ module model beschikbaar voor processor
     ]),
 
-    BullModule.forRoot({
-      connection: {
-        host: process.env.REDIS_HOST || "localhost",
-        port: Number(process.env.REDIS_PORT || 6379),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        const host = config.get<string>('REDIS_HOST') || 'localhost';
+        const port = Number(config.get<number>('REDIS_PORT')) || 6379;
+        const password = config.get<string>('REDIS_PASSWORD');
+
+        const connection: any = { host, port };
+
+        if (password) {
+          connection.password = password;
+          connection.tls = {}; // SSL alleen inschakelen als er een password is (Upstash)
+        }
+
+        return { connection };
       },
     }),
-
     BullModule.registerQueue({ name: "recommendations" }),
   ],
   controllers: [RecommendationEventController],
