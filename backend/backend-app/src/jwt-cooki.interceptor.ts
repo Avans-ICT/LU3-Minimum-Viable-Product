@@ -33,12 +33,11 @@ export class JwtCookieInterceptor implements NestInterceptor {
 
         if (data?.csrfToken) {
           res.cookie('csrf_token', data.csrfToken, {
-            httpOnly: false,
+            httpOnly: false,  // blijft leesbaar in frontend
             secure: isProd,
-            sameSite: isProd ? 'none' : 'lax',
+            sameSite: 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7,
           });
-          delete data.csrfToken;;
         }
       }),
     );

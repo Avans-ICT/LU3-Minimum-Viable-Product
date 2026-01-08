@@ -4,11 +4,7 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@
 export class CsrfGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
-    
-    if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
-      return true;
-    }
-    
+
     const csrfCookie = req.cookies['csrf_token'];
     const csrfHeader = req.headers['x-csrf-token'];
 
