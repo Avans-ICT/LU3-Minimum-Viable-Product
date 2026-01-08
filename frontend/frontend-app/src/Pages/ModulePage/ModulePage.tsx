@@ -1,27 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import "./modulepage.css";
 import SingleModule from "../../Components/SingeModule/Singlemodule";
 import Filters from "../../Components/FilterComponent/Filter"
 import type { FilterState } from "../../Components/FilterComponent/Filter"
-
-interface Module {
-  id: string;
-  name: string;
-  shortdescription: string;
-  description: string;
-  content: string;
-  studycredit: number;
-  location: string;
-  contact_id: number;
-  level: string;
-  learningoutcomes: string;
-  module_tags: string[];
-  popularity_score: number;
-  estimated_difficulty: number;
-  available_spots: number;
-  start_date: string;
-}
+import { apiFetch } from "../../utils/api";
+import type Module from "../../domain/entities/module.entity"
 
 function ModulePage() {
     const [modules, setModules] = useState<Module[]>([]);
@@ -40,8 +23,9 @@ function ModulePage() {
         const fetchModules = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get<Module[]>('http://localhost:3000/modules/');
-                setModules(response.data);
+                const response = await apiFetch('/modules');
+                const data: Module[] = await response.json();
+                setModules(data);
                 setLoading(false);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An error occurred');
@@ -52,6 +36,11 @@ function ModulePage() {
     }, []);
 
     const Modulefilter = modules.filter((module) => {
+        // Zoek filter
+        if (filters.searchTerm && !module.name.toLowerCase().includes(filters.searchTerm.toLowerCase())) {
+            return false;
+        }
+
         // Location filter
         if (filters.location.length > 0 && !filters.location.includes(module.location)) {
             if (module.location === "Den Bosch en Tilburg" &&  (filters.location.includes("Tilburg") || filters.location.includes("Den Bosch"))) {
@@ -84,15 +73,23 @@ function ModulePage() {
             <div className="container-fluid mt-4">
                 <div className="row">
                     <div className="col-md-2">
-                        {/* Pass filters and setFilters as props */}
                         <Filters filters={filters} setFilters={setFilters} />
                     </div>
                     <div className="col-md-10">
+                        <div className="mb-3 mt-3">
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Zoeken op naam ..."
+                                value={filters.searchTerm}
+                                onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })}
+                            />
+                        </div>
+                        
                         <h5 className="mb-3">
                             Showing {Modulefilter.length} of {modules.length} modules
                         </h5>
                         <div className="row">
-                            {/* Use Modulefilter instead of modules */}
                             {Modulefilter.map((module) => (
                                 <div className="col-md-4 mb-3" key={module.id}>
                                     <SingleModule
@@ -111,7 +108,7 @@ function ModulePage() {
                                         estimated_difficulty={module.estimated_difficulty}
                                         available_spots={module.available_spots}
                                         start_date={module.start_date}
-                                        />
+                                    />
                                 </div>
                             ))}
                         </div>

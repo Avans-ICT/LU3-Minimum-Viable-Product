@@ -17,15 +17,15 @@ function App() {
             <AuthProvider> 
                 <Router>
                     <Header />
-                        <Routes>
-                            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-                            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<Register />} />
-                            <Route path="*" element={<NotFound />} />
-                            <Route path="/module/:id" element={<ProtectedRoute><SingleModulePage /></ProtectedRoute>} />
-                            <Route path="/allmodules" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
-                        </Routes>
+                    <Routes>
+                        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="*" element={<NotFound />} />
+                        <Route path="/module/:id" element={<ProtectedRoute><SingleModulePage /></ProtectedRoute>} />
+                        <Route path="/allmodules" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
+                    </Routes>
                 </Router>
             </AuthProvider>   
         </>

@@ -1,24 +1,7 @@
 import React from 'react';
+import type Module from "../../domain/entities/module.entity"
 
-interface singleModuleProps {
-    id: string;
-    name: string;
-    shortdescription: string;
-    description: string;
-    content: string;
-    studycredit: number;
-    location: string;
-    contact_id: number;
-    level: string;
-    learningoutcomes: string;
-    module_tags: string[];
-    popularity_score: number;
-    estimated_difficulty: number;
-    available_spots: number;
-    start_date: string;
-}
-
-const SingleModule: React.FC<singleModuleProps> = ({ 
+const SingleModule: React.FC<Module> = ({ 
     name, 
     studycredit, 
     shortdescription, 

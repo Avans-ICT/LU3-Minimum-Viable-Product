@@ -1,22 +1,22 @@
 function Home()  {
   
     return (
-    <>
-        <div className="container mt-5">
-            <div className="row">
-                <div className="col-12 text-center">
-                    <h1 className="fw-bold mb-0">Keuzemodule kiezen</h1>
-                    <h1 className="fw-bold mb-0">Eenvoudiger.</h1>
-                    <h1 className="fw-bold mb-0">Duidelijker.</h1>
-                    <h1 className="fw-bold mb-0">Slimmer.</h1>
-                    <h1 className="fw-bold mb-4">Met AI</h1>
+        <>
+            <div className="container mt-5">
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <h1 className="fw-bold mb-0">Keuzemodule kiezen</h1>
+                        <h1 className="fw-bold mb-0">Eenvoudiger.</h1>
+                        <h1 className="fw-bold mb-0">Duidelijker.</h1>
+                        <h1 className="fw-bold mb-0">Slimmer.</h1>
+                        <h1 className="fw-bold mb-4">Met AI</h1>
                     
-                    {/* Tekst eronder */}
-                    <p className="lead">
+                        {/* Tekst eronder */}
+                        <p className="lead">
                         Ontworpen door Avans
-                    </p>
+                        </p>
+                    </div>
                 </div>
-            </div>
 
                 <div className="row mt-4">
                     <div className="col-12 col-md-6">
@@ -25,9 +25,9 @@ function Home()  {
                     <div className="col-12 col-md-6">
                         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil, qui amet inventore blanditiis consequatur, recusandae iste corrupti nostrum consequuntur aperiam ut! Alias nihil at non dignissimos omnis. Harum, magni voluptatibus exercitationem cupiditate, explicabo est a velit reprehenderit asperiores delectus nulla nemo quo ad odio excepturi. Est necessitatibus, quisquam consequatur totam doloremque voluptatum et beatae voluptatem accusamus quasi id dicta vero earum cumque explicabo dignissimos consectetur quibusdam nobis, iusto at accusantium ullam rem sit! Modi qui accusamus non facilis reprehenderit incidunt, ducimus quam quis mollitia similique exercitationem maiores totam blanditiis illum quisquam magni ad aliquam iusto quaerat nobis numquam sunt, dignissimos atque delectus. Quae molestiae laborum saepe voluptatibus, quibusdam reiciendis amet! Sint saepe quos, consequatur ad ratione cumque cum culpa autem modi doloribus repudiandae asperiores beatae quae nostrum minus optio placeat nobis iusto. Eaque alias ipsam optio fugiat perspiciatis quam facilis quos accusamus, sequi, quia odio deserunt earum modi facere deleniti. Excepturi, laudantium? Optio numquam ullam temporibus deserunt cumque aperiam veniam est! Reiciendis necessitatibus perspiciatis, quidem iste vel illo quod tempore qui pariatur sed fugit autem officia, unde saepe mollitia neque suscipit voluptates, illum adipisci voluptatibus quo? Soluta dolore itaque, nisi ut, doloribus ab nulla accusamus natus hic earum, eum facere!</p>
                     </div>
-        </div>
-        </div>
-    </>
+                </div>
+            </div>
+        </>
     )
 }
 
