@@ -35,7 +35,7 @@ export class JwtCookieInterceptor implements NestInterceptor {
           res.cookie('csrf_token', data.csrfToken, {
             httpOnly: false,  // blijft leesbaar in frontend
             secure: isProd,
-            sameSite: 'lax',
+            sameSite: isProd ? 'none' : 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7,
           });
         }
