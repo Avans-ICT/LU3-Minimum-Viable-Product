@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { apiFetch } from "../utils/api";
+import { setCSRFToken } from "./csrf";
 
 type AuthState = {
   user: any | null;      
@@ -26,12 +27,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             if (res.status === 401) {
                 const refreshRes = await apiFetch("/auth/refresh", { method: "POST" });
-
                 if (!refreshRes.ok) {
                     setState({ user: null, loading: false });
                     return;
                 }
-
+                const refreshData = await refreshRes.json();
+                setCSRFToken(refreshData.csrfToken);
                 res = await apiFetch("/auth/me");
             }
             
