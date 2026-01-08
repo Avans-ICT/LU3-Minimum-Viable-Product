@@ -2,7 +2,7 @@ import { getCookie } from './cookies';
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
     const csrfToken = getCookie('csrf_token');
-
+    console.log(csrfToken);
     // Bouw headers dynamisch
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -10,7 +10,9 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
     };
 
     if (csrfToken) {
+        console.log(csrfToken);
         headers['X-CSRF-Token'] = csrfToken;
+        console.log(headers);
     }
 
     return fetch(`${import.meta.env.VITE_API_URL}${path}`, {
