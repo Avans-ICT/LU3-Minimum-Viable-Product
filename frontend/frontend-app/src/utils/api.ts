@@ -15,7 +15,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
         console.log("alle headers?" + headers);
     }
 
-    return fetch(`/api${path}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}${path}`, {
         credentials: 'include',
         headers,
         ...options,
