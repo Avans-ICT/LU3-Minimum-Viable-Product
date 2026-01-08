@@ -2,6 +2,7 @@ import { useState } from "react";
 import { apiFetch } from "../utils/api"; // fetch helper met credentials
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { setCSRFToken } from "../auth/csrf";
 
 function Register() {
     const [firstName, setFirstName] = useState("");
@@ -49,6 +50,7 @@ function Register() {
             }
 
             const data = await response.json();
+            setCSRFToken(data.csrfToken);
             console.log("Gebruiker geregistreerd:", data);
             setSuccess(true);
             await refreshAuth();

@@ -1,8 +1,8 @@
-import { getCookie } from './cookies';
 
+import { getCSRFToken } from '../auth/csrf';
 export async function apiFetch(path: string, options: RequestInit = {}) {
-    const csrfToken = getCookie('csrf_token');
-    console.log(csrfToken);
+    const csrfToken = getCSRFToken();
+    console.log("csrf token na opgehaald: " + csrfToken);
     // Bouw headers dynamisch
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -10,9 +10,9 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
     };
 
     if (csrfToken) {
-        console.log(csrfToken);
+        console.log("csrf token voor header zetten" + csrfToken);
         headers['X-CSRF-Token'] = csrfToken;
-        console.log(headers);
+        console.log("alle headers?" + headers);
     }
 
     return fetch(`${import.meta.env.VITE_API_URL}${path}`, {

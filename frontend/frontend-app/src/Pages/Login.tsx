@@ -2,7 +2,7 @@ import { useState } from "react";
 import { apiFetch } from "../utils/api";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import { setCSRFToken } from "../auth/csrf";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -29,6 +29,7 @@ function Login() {
             }
 
             const data = await response.json();
+            setCSRFToken(data.csrfToken);
             console.log("Ingelogd:", data);
             await refreshAuth();
             navigate("/"); 

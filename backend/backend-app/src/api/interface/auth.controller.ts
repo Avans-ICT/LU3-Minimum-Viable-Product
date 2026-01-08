@@ -30,7 +30,7 @@ export class AuthController {
     //protected endpoint testing purposes only
     
     @SkipThrottle()
-    @UseGuards(AuthGuard('jwt'), CsrfGuard)
+    @UseGuards(AuthGuard('jwt'))
     @Get('/me')
     getProfile(@Req() req) {
         return req.user;
