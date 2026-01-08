@@ -2,7 +2,7 @@ import { getCookie } from './cookies';
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
     const csrfToken = getCookie('csrf_token');
-
+    console.log('CSRF token:', getCookie('csrf_token'));
     // Bouw headers dynamisch
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
