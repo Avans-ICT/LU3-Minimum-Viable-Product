@@ -4,7 +4,8 @@ import { AuthRepository } from '../infrastructure/repositories/auth.repository';
 import { RegisterDto } from '../domain/dtos/register.dto';
 import { LoginDto } from '../domain/dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import {AuthResponseDto} from '../domain/dtos/authresponse.dto'
+import { AuthResponseDto } from '../domain/dtos/authresponse.dto';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,8 @@ export class AuthService {
         this.logger.log(`Login successful for ${loginDto.email} (userId: ${user._id})`);
         return {
             accessToken: accessToken,
-            refreshToken: refreshToken
+            refreshToken: refreshToken,
+            csrfToken: crypto.randomBytes(24).toString('hex'),
         };
     }
 
@@ -77,7 +79,8 @@ export class AuthService {
 
         return {
             accessToken: accessToken,
-            refreshToken: refreshToken
+            refreshToken: refreshToken,
+            csrfToken: crypto.randomBytes(24).toString('hex'),
         };
     }
 
@@ -149,6 +152,7 @@ export class AuthService {
         return {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
+            csrfToken: crypto.randomBytes(24).toString('hex'),
         };
     }
 }

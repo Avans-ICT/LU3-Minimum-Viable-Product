@@ -8,4 +8,7 @@ export class AuthResponseDto {
 
     @IsString()
     refreshToken: string;
+
+    @IsString()
+    csrfToken: string;
 }

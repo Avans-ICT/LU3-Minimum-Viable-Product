@@ -1,6 +1,5 @@
 import {Injectable, NestInterceptor, ExecutionContext, CallHandler,} from '@nestjs/common';
 import { tap } from 'rxjs/operators';
-import * as crypto from 'crypto';
 
 @Injectable()
 export class JwtCookieInterceptor implements NestInterceptor {
@@ -32,15 +31,14 @@ export class JwtCookieInterceptor implements NestInterceptor {
           delete data.refreshToken;
         }
 
-        if (data) {
-          const csrfToken = crypto.randomBytes(24).toString('hex');
-          res.cookie('csrf_token', csrfToken, {
+        if (data?.csrfToken) {
+          res.cookie('csrf_token', data.csrfToken, {
             httpOnly: false,
             secure: isProd,
             sameSite: isProd ? 'none' : 'lax',
             maxAge: 1000 * 60 * 60 * 24 * 7,
           });
-          data.csrfToken = csrfToken;
+          delete data.csrfToken;;
         }
       }),
     );
