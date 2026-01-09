@@ -3,3 +3,5 @@ uvicorn[standard]
 joblib
 pydantic
 pydantic-settings
+pytest
+httpx
