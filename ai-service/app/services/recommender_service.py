@@ -22,7 +22,6 @@ class ContentBasedRecommender:
         self.df = df.reset_index(drop=True)
         self.X_tfidf = X_tfidf
 
-    # TODO: scores accurater / eerlijker maken
     def _constraint_score(self, row: pd.Series, profile: StudentProfile) -> Tuple[float, Dict[str, str]]:
         """
         Simpele constraint-score zoals in notebook:
@@ -51,7 +50,7 @@ class ContentBasedRecommender:
 
         return float(score), reasons
 
-    def recommend(self, profile: StudentProfile, k: int = 10, alpha: float = 0.5, beta: float = 0.5) -> pd.DataFrame:
+    def recommend(self, profile: StudentProfile, k: int = 10, alpha: float = 0.7, beta: float = 0.3) -> pd.DataFrame:
         # Alpha + beta moet altijd gelijk zijn aan 1
         if not np.isclose(alpha + beta, 1.0):
             raise ValueError("Alpha + beta moet gelijk zijn aan 1")

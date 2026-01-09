@@ -46,7 +46,7 @@ jobs:
           MODEL_VERSION: ${{ secrets.AI_MODEL_VERSION }}
 
   cd:
-    name: CD - (Optional) Build Image + Deploy to Azure (if configured)
+    name: CD - Build Image + Deploy to Azure (if configured)
     needs: ci
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
