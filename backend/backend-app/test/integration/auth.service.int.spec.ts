@@ -49,8 +49,10 @@ describe('AuthService (integration)', () => {
     const registerResult = await authService.register({
       email: 'test@test.com',
       password: 'password123',
-      firstName: 'joep',
-      lastName: 'jaap'
+      profile: {
+        firstName: 'joep',
+        lastName: 'jaap'
+      }
     });
 
     expect(registerResult.accessToken).toBeDefined();
@@ -70,8 +72,11 @@ describe('AuthService (integration)', () => {
     await authService.register({
       email: 'hash@test.com',
       password: 'plain-text',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
+      
     });
 
     const user = await authRepository.findByEmail('hash@test.com');
@@ -86,16 +91,20 @@ describe('AuthService (integration)', () => {
     await authService.register({
       email: 'dup@test.com',
       password: '123',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
     });
 
     await expect(
       authService.register({
         email: 'dup@test.com',
         password: '123',
+        profile: {
         firstName: 'a',
         lastName: 'b',
+      }
       }),
     ).rejects.toThrow();
   });
@@ -105,8 +114,10 @@ describe('AuthService (integration)', () => {
     await authService.register({
       email: 'login@test.com',
       password: 'correct',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
     });
 
     await expect(
@@ -132,8 +143,10 @@ describe('AuthService (integration)', () => {
     const { refreshToken } = await authService.register({
       email: 'refresh@test.com',
       password: '123',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
     });
 
     const user = await authRepository.findByEmail('refresh@test.com');
@@ -149,8 +162,10 @@ describe('AuthService (integration)', () => {
     const { refreshToken } = await authService.register({
       email: 'rotate@test.com',
       password: '123',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
     });
 
     const result = await authService.refresh(refreshToken);
@@ -164,8 +179,10 @@ describe('AuthService (integration)', () => {
     const { refreshToken } = await authService.register({
       email: 'logout@test.com',
       password: '123',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
     });
 
     expect(refreshToken).toBeDefined();
@@ -173,9 +190,9 @@ describe('AuthService (integration)', () => {
     const user = await authRepository.findByEmail('logout@test.com');
 
     if (user) {
-      await authService.logout(user._id.toString());
+      await authService.logout(user.id.toString());
 
-      const updated = await authRepository.findById(user._id.toString());
+      const updated = await authRepository.findById(user.id.toString());
       if(updated)
       expect(updated.refreshToken).toBeNull();
     }     
@@ -186,8 +203,10 @@ describe('AuthService (integration)', () => {
     const { accessToken } = await authService.register({
       email: 'jwt@test.com',
       password: '123',
-      firstName: 'a',
-      lastName: 'b',
+      profile: {
+        firstName: 'a',
+        lastName: 'b',
+      }
     });
 
     const decoded = jwt.decode(accessToken) as any;
