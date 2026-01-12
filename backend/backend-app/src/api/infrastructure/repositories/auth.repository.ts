@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User } from '../schemas/user.schema';
-import { Profile } from 'src/api/domain/entities/profile';
-import { UserEntity } from 'src/api/domain/entities/user';
+import { Profile } from '../../domain/entities/profile';
+import { UserEntity } from '../../domain/entities/user';
 import { ProfileSchemaClass } from '../schemas/profile.schema';
 @Injectable()
 export class AuthRepository {
