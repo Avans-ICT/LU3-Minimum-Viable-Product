@@ -37,10 +37,12 @@ function Register() {
             const response = await apiFetch("/auth/register", {
                 method: "POST",
                 body: JSON.stringify({
-                    firstName,
-                    lastName,
                     email,
                     password,
+                    profile: {
+                        firstName,
+                        lastName,
+                    },
                 }),
             });
 

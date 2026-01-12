@@ -1,17 +1,23 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Post, Body } from "@nestjs/common";
 import { ModuleService } from "../application/module.service";
+import { ModulesBatchDto } from "../domain/dtos/modulebatch.dto";
 
 @Controller("modules")
 export class ModuleController {
-  constructor(private readonly moduleService: ModuleService) {}
+    constructor(private readonly moduleService: ModuleService) { }
 
-  @Get(":id")
-  async getModuleById(@Param("id") id: string) {
-    return this.moduleService.getModuleById(id);
-  }
+    @Get(":id")
+    async getModuleById(@Param("id") id: string) {
+        return this.moduleService.getModuleById(id);
+    }
 
-  @Get()
-  async getAllModules() {
-    return this.moduleService.getAllModules();
-  }
+    @Get()
+    async getAllModules() {
+        return this.moduleService.getAllModules();
+    }
+
+    @Post("/batch")
+    async getModulesByIds(@Body() dto: ModulesBatchDto) {
+        return this.moduleService.getModulesByIds(dto.ids);
+    }
 }

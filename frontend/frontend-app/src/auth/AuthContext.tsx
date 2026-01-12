@@ -2,14 +2,16 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { apiFetch } from "../utils/api";
 import { setCSRFToken } from "./csrf";
+import type Profile from "../domain/entities/profile";
+import { setGlobalRefreshAuth } from "./authHelper";
 
 type AuthState = {
-  user: any | null;      
+  profile: Profile | null;      
   loading: boolean;      
 };
 
 type AuthContextType = {
-  user: any | null;
+  profile: Profile | null;
   loading: boolean;
   refreshAuth: () => Promise<void>;
   logout: () => Promise<void>;
@@ -18,17 +20,16 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [state, setState] = useState<AuthState>({ user: null, loading: true });
+    const [state, setState] = useState<AuthState>({ profile: null, loading: true });
 
     // Functie om auth status bij te werken via backend
     const refreshAuth = async () => {
         try {
             let res = await apiFetch("/auth/me", { method: "GET" });
-
             if (res.status === 401) {
                 const refreshRes = await apiFetch("/auth/refresh", { method: "POST" });
                 if (!refreshRes.ok) {
-                    setState({ user: null, loading: false });
+                    setState({ profile: null, loading: false });
                     return;
                 }
                 const refreshData = await refreshRes.json();
@@ -37,14 +38,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
             
             if (!res.ok) {
-                setState({ user: null, loading: false });
+                setState({ profile: null, loading: false });
                 return;
             }
 
-            const user = await res.json();
-            setState({ user, loading: false });
+            const profile = await res.json();
+            console.log(profile)
+            setState({ profile, loading: false });
         } catch (err) {
-            setState({ user: null, loading: false });
+            setState({ profile: null, loading: false });
         }
     };
 
@@ -53,17 +55,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             await apiFetch("/auth/logout", { method: "POST" });
         } finally {
-            setState({ user: null, loading: false });
+            setState({ profile: null, loading: false });
         }
     };
 
     // Initial check bij app start
     useEffect(() => {
+        setGlobalRefreshAuth(refreshAuth);
         refreshAuth();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user: state.user, loading: state.loading, refreshAuth, logout }}>
+        <AuthContext.Provider value={{ profile: state.profile, loading: state.loading, refreshAuth, logout }}>
             {children}
         </AuthContext.Provider>
     );

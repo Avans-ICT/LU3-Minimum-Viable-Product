@@ -6,6 +6,8 @@ import { LoginDto } from '../domain/dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponseDto } from '../domain/dtos/authresponse.dto';
 import * as crypto from 'crypto';
+import { ProfileResponseDto } from '../domain/dtos/profileresponse.dto';
+import { ChangeProfileDto } from '../domain/dtos/changeprofile.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,15 +36,15 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        const accessToken = this.signAccessToken(user._id.toString(), user.email);
-        const refreshToken = this.signRefreshToken(user._id.toString(), user.email);
+        const accessToken = this.signAccessToken(user.id.toString(), user.email);
+        const refreshToken = this.signRefreshToken(user.id.toString(), user.email);
 
         await this.authRepository.updateRefreshToken(
-            user._id.toString(),
+            user.id.toString(),
             await bcrypt.hash(refreshToken, 10),
         );
 
-        this.logger.log(`Login successful for ${loginDto.email} (userId: ${user._id})`);
+        this.logger.log(`Login successful for ${loginDto.email} (userId: ${user.id})`);
         return {
             accessToken: accessToken,
             refreshToken: refreshToken,
@@ -84,6 +86,33 @@ export class AuthService {
         };
     }
 
+    //userProfile ophalen uit database
+    async getProfile(userId: string): Promise<ProfileResponseDto> {
+        const profile = await this.authRepository.getProfileByUserId(userId);
+
+        if (!profile) {
+            throw new NotFoundException('Profile not found');
+        }
+
+        // Return the ProfileResponseDto directly
+        return profile;
+    }
+
+    async changeProfile(profile: ChangeProfileDto, userId: string): Promise<void> {
+        this.logger.log(`Change profile attempt for user ${userId}`);
+
+        // Probeer de database te updaten via de repository
+        const result = await this.authRepository.changeProfile(profile, userId);
+
+        // Check of de update daadwerkelijk iets heeft geraakt
+        if (!result.matched) {
+            this.logger.warn(`Change profile failed: no user found with id ${userId}`);
+            throw new NotFoundException('User not found or profile update failed');
+        }
+
+        this.logger.log(`Profile successfully updated for user ${userId}`);
+    }
+
     //token genereren
     private signAccessToken(userId: string, email: string): string {
         return this.jwtService.sign(
@@ -113,7 +142,7 @@ export class AuthService {
     }
 
     //token refreshen
-    async refresh(refreshToken: string): Promise<AuthResponseDto>  {
+    async refresh(refreshToken: string): Promise<AuthResponseDto> {
         if (!refreshToken) {
             this.logger.warn('Refresh failed: no refresh token provided');
             throw new UnauthorizedException();
@@ -122,37 +151,43 @@ export class AuthService {
         const payload = this.jwtService.verify(refreshToken);
 
         const user = await this.authRepository.findById(payload.sub);
-        if (!user?.refreshToken) {
+
+        if (!user) {
+            this.logger.warn(`Refresh failed: no user found for userId ${payload.sub}`);
+            throw new UnauthorizedException();
+        }
+
+        if (!user.refreshToken) {
             this.logger.warn(`Refresh failed: no refresh token stored for userId ${payload.sub}`);
             throw new UnauthorizedException();
         }
 
         const valid = await bcrypt.compare(refreshToken, user.refreshToken);
         if (!valid) {
-            this.logger.warn(`Refresh failed: invalid refresh token for userId ${user._id}`);
+            this.logger.warn(`Refresh failed: invalid refresh token for userId ${user.id}`);
             throw new UnauthorizedException();
         }
 
         const newAccessToken = this.signAccessToken(
-            user._id.toString(),
+            user.id.toString(),
             user.email,
         );
 
         const newRefreshToken = this.signRefreshToken(
-            user._id.toString(),
+            user.id.toString(),
             user.email,
         );
 
         await this.authRepository.updateRefreshToken(
-            user._id.toString(),
+            user.id.toString(),
             await bcrypt.hash(newRefreshToken, 10),
         );
-        this.logger.log(`Refresh successful for userId ${user._id}`);
+        this.logger.log(`Refresh successful for userId ${user.id}`);
 
         return {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
             csrfToken: crypto.randomBytes(24).toString('hex'),
-        };
+        };        
     }
 }
