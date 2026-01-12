@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 export default function Header() {
-    const { user, loading, logout } = useAuth();
+    const { profile, loading, logout } = useAuth();
     
     if (!loading)
         return (
@@ -14,7 +14,7 @@ export default function Header() {
 
                     <div className="collapse navbar-collapse show">
                         <ul className="navbar-nav ms-auto">
-                            {user ? (
+                            {profile ? (
                                 <>
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/home">
@@ -29,11 +29,26 @@ export default function Header() {
                                     </li>
 
                                     <li className="nav-item">
+                                        <Link className="nav-link" to="/recommendations">
+                                            Recommendations
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link
+                                            className="btn btn-outline-light ms-2"
+                                            to="/profile"
+                                        >
+                                            Profiel bewerken
+                                        </Link>
+                                    </li>
+                                    
+                                    <li className="nav-item">
                                         <button
                                             className="btn btn-outline-light ms-2"
                                             onClick={logout}
                                         >
-                                            Logout
+                                            {profile.firstName} {profile.lastName}
                                         </button>
                                     </li>
                                 </>

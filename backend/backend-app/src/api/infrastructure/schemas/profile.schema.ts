@@ -1,15 +1,22 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Types } from "mongoose";
+import { Prop, Schema } from '@nestjs/mongoose';
 
-@Schema({ collection: "profiles" })
-export class ProfileDoc {
-  @Prop({ type: Types.ObjectId, required: true, ref: "users" }) user_id!: Types.ObjectId;
+@Schema({ _id: false })
+export class ProfileSchemaClass {
+  @Prop()
+  firstName: string;
 
-  @Prop({ required: true }) study_program!: string;
-  @Prop({ required: true }) location!: string;
-  @Prop({ required: true }) level!: string;
+  @Prop()
+  lastName: string;
 
-  @Prop({ type: [String], required: true }) interests!: string[];
-  @Prop({ required: true }) updated_at!: Date;
+  @Prop()
+  interests?: string;
+
+  @Prop()
+  studycredits?: number;
+
+  @Prop()
+  location?: string;
+
+  @Prop()
+  level?: string;
 }
-export const ProfileSchema = SchemaFactory.createForClass(ProfileDoc);

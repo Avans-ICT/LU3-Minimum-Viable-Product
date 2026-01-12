@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseInterceptors, UseGuards, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, UseInterceptors, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthService } from '../application/auth.service';
 import { LoginDto } from '../domain/dtos/login.dto';
 import { RegisterDto } from '../domain/dtos/register.dto';
@@ -6,6 +6,7 @@ import { JwtCookieInterceptor } from '../../jwt-cooki.interceptor';
 import { AuthGuard } from '@nestjs/passport';
 import { CsrfGuard } from '../../csrf-guard';
 import { SkipThrottle } from '@nestjs/throttler';
+import { ChangeProfileDto } from '../domain/dtos/changeprofile.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -33,14 +34,14 @@ export class AuthController {
     @UseGuards(AuthGuard('jwt'))
     @Get('/me')
     getProfile(@Req() req) {
-        return req.user;
+        return this.authService.getProfile(req.user.userId)
     }
 
     //uitloggen
     @UseGuards(AuthGuard('jwt'), CsrfGuard)
     @Post('/logout')
     async logout(@Req() req, @Res({ passthrough: true }) res) {
-        await this.authService.logout(req.user?.userId);
+        await this.authService.logout(req.user.userId);
 
         const isProd = process.env.NODE_ENV === 'production';
 
@@ -71,5 +72,12 @@ export class AuthController {
     @Post('/refresh')
     async refresh(@Req() req) {
         return await this.authService.refresh(req.cookies.refresh_token);
+    }
+
+    @UseInterceptors(JwtCookieInterceptor)
+    @UseGuards(CsrfGuard, AuthGuard('jwt'))
+    @Put('/profile')
+    async changeProfile(@Req() req, @Body() ChangeProfileDto: ChangeProfileDto) {
+        return await this.authService.changeProfile(ChangeProfileDto, req.user.userId);
     }
 }

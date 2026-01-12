@@ -1,4 +1,4 @@
-
+import { callGlobalRefreshAuth } from '../auth/authHelper';
 import { getCSRFToken } from '../auth/csrf';
 export async function apiFetch(path: string, options: RequestInit = {}) {
     const csrfToken = getCSRFToken();
@@ -15,9 +15,20 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
         console.log("alle headers?" + headers);
     }
 
-    return fetch(`${import.meta.env.VITE_API_URL}${path}`, {
-        credentials: 'include',
-        headers,
-        ...options,
-    });
+    const doFetch = async () =>
+        fetch(`${import.meta.env.VITE_API_URL}${path}`, {
+            credentials: 'include',
+            headers,
+            ...options,
+        });
+
+    let res = await doFetch();
+
+    if (!path.endsWith("/me") && res.status === 401) {
+        const refreshed = await callGlobalRefreshAuth();
+        if (refreshed) {
+            res = await doFetch();
+        }
+    }
+    return res;
 }

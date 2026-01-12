@@ -32,4 +32,17 @@ export class ModuleService {
 
         return docs.map(toModuleEntity);
     }
+
+    async getModulesByIds(ids: string[]): Promise<ModuleEntity[]>{
+        this.logger.log(`Fetching module by IDs: ${ids}`);
+        const docs = await this.moduleRepository.findByIds(ids);
+
+        if (docs.length === 0) {
+            this.logger.warn(`No modules found`);
+            throw new NotFoundException("No modules found");
+        }
+        this.logger.log(`Modules found`);
+
+        return docs.map(toModuleEntity);
+    }
 }

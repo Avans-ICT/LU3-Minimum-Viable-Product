@@ -5,15 +5,19 @@ import { Module, ModuleDocument } from "../schemas/module.schema";
 
 @Injectable()
 export class ModuleRepository {
-  constructor(
-    @InjectModel(Module.name) private readonly moduleModel: Model<ModuleDocument>,
-  ) {}
+    constructor(
+        @InjectModel(Module.name) private readonly moduleModel: Model<ModuleDocument>,
+    ) { }
 
-  async findById(id: string): Promise<ModuleDocument | null> {
-    return this.moduleModel.findById(id).exec();
-  }
+    async findById(id: string): Promise<ModuleDocument | null> {
+        return this.moduleModel.findById(id).exec();
+    }
 
-  async findAll(): Promise<ModuleDocument[]> {
-    return this.moduleModel.find().exec();
-  }
+    async findAll(): Promise<ModuleDocument[]> {
+        return this.moduleModel.find().exec();
+    }
+
+    async findByIds(ids: string[]): Promise<ModuleDocument[]> {
+        return this.moduleModel.find({ _id: { $in: ids } }).exec();
+    }
 }

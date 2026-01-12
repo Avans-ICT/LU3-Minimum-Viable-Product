@@ -36,7 +36,7 @@ ai-service/
 ```bash
 cd ai-service
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: python -m venv venv
 pip install -r requirements.txt
 ```
 

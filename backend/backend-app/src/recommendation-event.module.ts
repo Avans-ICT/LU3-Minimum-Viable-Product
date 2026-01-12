@@ -1,4 +1,4 @@
-import { Module as NestModule } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { HttpModule } from "@nestjs/axios";
 import { BullModule } from "@nestjs/bullmq";
@@ -20,8 +20,9 @@ import {
   RecommendationFeedbackSchema,
 } from "./api/infrastructure/schemas/recommendation-feedback.schema";
 import { RecommendationFeedbackRepository } from "./api/infrastructure/repositories/recommendation-feedback.repository";
+import { LoggerMiddleware } from './api/middleware/logger';
 
-@NestModule({
+@Module({
   imports: [
     HttpModule.register({ timeout: 15000, maxRedirects: 0 }),
 
@@ -60,4 +61,10 @@ import { RecommendationFeedbackRepository } from "./api/infrastructure/repositor
     AiServiceClient,
   ],
 })
-export class RecommendationEventModule {}
+export class RecommendationEventModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes(RecommendationEventController); // alleen voor AuthController
+  }
+}
