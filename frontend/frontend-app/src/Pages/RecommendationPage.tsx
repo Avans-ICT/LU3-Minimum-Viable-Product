@@ -11,13 +11,14 @@ function generateUUID(): string {
 }
 
 function RecommendationPage() {
-    const { profile, loading: authLoading } = useAuth();
+    const { profile, loading: authLoading, sessionId } = useAuth();
     const [recommendations, setRecommendations] = useState<RecommendationModule[]>([]);
     const [modules, setModules] = useState<Module[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [eventId, setEventId] = useState<string | null>(null);
 
-    const [k, setK] = useState<number>(5);
+    const [k, /*setK*/] = useState<number>(5);
     const effectRan = useRef(false);
 
     if (authLoading) return <div>Loading profile...</div>;
@@ -28,14 +29,13 @@ function RecommendationPage() {
     useEffect(() => {
         if (!hasProfile || effectRan.current) return;
         effectRan.current = true;
-
+        console.log("seionid"+ sessionId)
         const fetchRecommendations = async () => {
             try {
-                setLoading(true);
-
+                setLoading(true);       
                 const requestBody = {
                     requestId: generateUUID(),
-                    sessionId: generateUUID(),
+                    sessionId: sessionId,
                     k: k,
                     inputInterestsText: profile.interests,
                     constraintsLocation: profile.location ?? "",
@@ -52,6 +52,7 @@ function RecommendationPage() {
                 if (!postRes.ok) throw new Error("Failed to request recommendations.");
                 const postData: { eventId: string; status: string } = await postRes.json();
                 const eventId = postData.eventId;
+                setEventId(eventId);
 
                 const maxAttempts = 10;
                 let attempt = 0;
@@ -124,6 +125,7 @@ function RecommendationPage() {
                             key={recommendation.module_id}
                             recommendation={recommendation}
                             moduleDetails={moduleDetails!}
+                            eventId={eventId!}
                         />
                     ))
                 ) : (

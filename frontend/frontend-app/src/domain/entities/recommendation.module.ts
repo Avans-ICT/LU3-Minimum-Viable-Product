@@ -4,8 +4,15 @@ export default interface RecommendationModule {
     score: number;
     _id: string;
     reasons?: {
-        location?: string; 
-        level?: string;
-        credit?: string;     
-    };
-};
+        constraints?: {
+            location?: string;
+            level?: string;
+            credit?: string;
+        };
+        content?: {
+            type: string;
+            keywords?: string[];
+            explanation?: string;
+        };
+    }
+}

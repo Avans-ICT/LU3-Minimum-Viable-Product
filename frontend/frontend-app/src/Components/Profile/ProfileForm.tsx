@@ -37,12 +37,14 @@ function ProfileForm() {
             setError("Alle velden moeten ingevuld zijn");
             return;
         }
+        console.log(level)
 
         setLoading(true);
 
         try {
             const res = await apiFetch("/auth/profile", {
                 method: "PUT",
+                
                 body: JSON.stringify({ interests, location, level, studycredits }),
             });
 

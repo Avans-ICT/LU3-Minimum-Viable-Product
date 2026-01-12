@@ -4,22 +4,25 @@ import { apiFetch } from "../utils/api";
 import { setCSRFToken } from "./csrf";
 import type Profile from "../domain/entities/profile";
 import { setGlobalRefreshAuth } from "./authHelper";
+import { useRef } from "react";
 
 type AuthState = {
-  profile: Profile | null;      
-  loading: boolean;      
+    profile: Profile | null;
+    loading: boolean;
 };
 
 type AuthContextType = {
-  profile: Profile | null;
-  loading: boolean;
-  refreshAuth: () => Promise<void>;
-  logout: () => Promise<void>;
+    profile: Profile | null;
+    loading: boolean;
+    refreshAuth: () => Promise<void>;
+    logout: () => Promise<void>;
+    sessionId: string;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+    const sessionIdRef = useRef<string>(crypto.randomUUID());
     const [state, setState] = useState<AuthState>({ profile: null, loading: true });
 
     // Functie om auth status bij te werken via backend
@@ -66,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ profile: state.profile, loading: state.loading, refreshAuth, logout }}>
+        <AuthContext.Provider value={{ profile: state.profile, loading: state.loading, refreshAuth, logout, sessionId: sessionIdRef.current}}>
             {children}
         </AuthContext.Provider>
     );
