@@ -33,6 +33,10 @@ def _build_recommender_from_artifact(loaded: object) -> ContentBasedRecommender:
         if X_tfidf is None:
             X_tfidf = loaded.get("matrix")
 
+        feature_names = loaded.get("feature_names")
+        if feature_names is None:
+            feature_names = loaded.get("featureNames")
+
         if tfidf is None or df is None or X_tfidf is None:
             raise RuntimeError(
                 "Artifact dict missing required keys. "
@@ -43,7 +47,12 @@ def _build_recommender_from_artifact(loaded: object) -> ContentBasedRecommender:
         if not isinstance(df, pd.DataFrame):
             df = pd.DataFrame(df)
 
-        return ContentBasedRecommender(tfidf=tfidf, df=df, X_tfidf=X_tfidf)
+        return ContentBasedRecommender(
+            tfidf=tfidf,
+            df=df,
+            X_tfidf=X_tfidf,
+            feature_names=feature_names,
+        )
 
     raise RuntimeError(f"Unsupported artifact type: {type(loaded)}")
 

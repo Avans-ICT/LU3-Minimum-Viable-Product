@@ -20,8 +20,8 @@ class Settings(BaseSettings):
     model_version: str = Field(default="baseline")
 
     # Optional scoring defaults (used by integration endpoint)
-    default_alpha: float = Field(default=0.5)
-    default_beta: float = Field(default=0.5)
+    default_alpha: float = Field(default=0.7)
+    default_beta: float = Field(default=0.3)
     algorithm_name: str = Field(default="content_based")
 
     model_config = SettingsConfigDict(

@@ -87,7 +87,9 @@ async def recommend_for_backend(req: AiRecommendationRequest, request: Request):
         if score is None:
             score = row.get("score", 0.0)
 
-        reasons = row.get("constraint_reasons", None)
+        reasons = row.get("reasons", None)
+        if reasons is None:
+            reasons = row.get("constraint_reasons", None)
 
         results.append(
             AiRecommendationResult(
