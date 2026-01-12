@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any
+from typing import Optional, Dict
 from pydantic import BaseModel, Field
 
 class RecommendRequest(BaseModel):
@@ -11,7 +11,6 @@ class RecommendRequest(BaseModel):
     beta: float = 0.5
 
 class Recommendation(BaseModel):
-    module_id: str
     module_name: str
     location: Optional[str] = None
     level: Optional[str] = None
@@ -19,8 +18,7 @@ class Recommendation(BaseModel):
     content_sim: float
     constraint_score: float
     final_score: float
-    constraint_reasons: Dict[str, str] = {}
-    reasons: Optional[Dict[str, Any]] = None
+    constraint_reasons: Dict[str, str]
 
 class RecommendResponse(BaseModel):
     results: list[Recommendation]
