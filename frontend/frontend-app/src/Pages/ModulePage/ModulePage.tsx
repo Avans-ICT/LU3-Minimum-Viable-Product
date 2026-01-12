@@ -5,8 +5,12 @@ import Filters from "../../Components/FilterComponent/Filter"
 import type { FilterState } from "../../Components/FilterComponent/Filter"
 import { apiFetch } from "../../utils/api";
 import type Module from "../../domain/entities/module.entity"
+import { useAuth } from "../../auth/AuthContext";
 
 function ModulePage() {
+    const { user } = useAuth();
+    const userId = user?.id ?? user?.userId ?? user?.sub ?? null;
+    
     const [modules, setModules] = useState<Module[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -16,8 +20,55 @@ function ModulePage() {
         searchTerm: '',
         location: [],
         level: [],
-        credits: []
+        credits: [],
+        favorites: [],
+        showFavorites: false
     });
+
+    useEffect(() => {
+        const fetchFavorites = async () => {
+            if (!userId) return;
+            
+            try {
+                const response = await apiFetch(`/favorite/${userId}`);
+                const favoriteIds: string[] = await response.json();
+                setFilters(prev => ({ ...prev, favorites: favoriteIds }));
+                console.log(favoriteIds)
+            } catch (err) {
+                console.error('Failed to fetch favorites:', err);
+            }
+        };
+        
+        fetchFavorites();
+    }, [userId]);
+
+    const handleToggleFavorite = async (moduleId: string) => {
+        if (!userId) {
+            alert('Please log in to favorite modules');
+            return;
+        }
+
+        const isFav = filters.favorites.includes(moduleId);
+        const method = isFav ? 'DELETE' : 'POST';
+        try {
+            const res = await apiFetch('/favorite', {
+                method,
+                body: JSON.stringify({ userID: userId, moduleID: moduleId }),
+            });
+
+            if (!res.ok) {
+                console.error('Failed to toggle favorite', await res.text());
+                return;
+            }
+
+            setFilters(prev => ({
+                ...prev,
+                favorites: isFav ? prev.favorites.filter(id => id !== moduleId) : [...prev.favorites, moduleId]
+            }));
+        } catch (err) {
+            console.error('Error toggling favorite:', err);
+        }
+    };
 
     useEffect(() => {
         const fetchModules = async () => {
@@ -59,6 +110,11 @@ function ModulePage() {
 
         // Credits filter
         if (filters.credits.length > 0 && !filters.credits.includes(module.studycredit)) {
+            return false;
+        }
+
+        // If 'showFavorites' is enabled, ensure module is in favorites
+        if (filters.showFavorites && !filters.favorites.includes(module.id)) {
             return false;
         }
 
@@ -108,6 +164,8 @@ function ModulePage() {
                                         estimated_difficulty={module.estimated_difficulty}
                                         available_spots={module.available_spots}
                                         start_date={module.start_date}
+                                        isFavorite={filters.favorites.includes(module.id)}
+                                        onToggleFavorite={handleToggleFavorite}
                                     />
                                 </div>
                             ))}

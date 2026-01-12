@@ -1,11 +1,14 @@
 import React from 'react';
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
+
 interface FilterState {
     searchTerm: string;
     location: string[];
     level: string[];
     credits: number[];
+    favorites: string[];
+    showFavorites: boolean;
 }
 
 interface FiltersProps {
@@ -20,8 +23,14 @@ function Filters({ filters, setFilters }: FiltersProps) {
             searchTerm: '',
             location: [],
             level: [],
-            credits: []
+            credits: [],
+            favorites: filters.favorites,
+            showFavorites: false
         });
+    };
+
+    const toggleShowFavorites = () => {
+        setFilters(prev => ({ ...prev, showFavorites: !prev.showFavorites }));
     };
 
     const toggleValue = <T,>(array: T[], value: T): T[] => {
@@ -61,14 +70,23 @@ function Filters({ filters, setFilters }: FiltersProps) {
                 {/* Header */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4 className="mb-0">Filters</h4>
-                    {hasActiveFilters && (
-                        <button 
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={clearFilters}
+                    <div>
+                        <button
+                            className={filters.showFavorites ? 'btn btn-sm btn-danger me-2' : 'btn btn-sm btn-outline-danger me-2'}
+                            onClick={toggleShowFavorites}
                         >
-                            Wis alles
+                            toon favorieten
                         </button>
-                    )}
+                        {hasActiveFilters && (
+                            <button 
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={clearFilters}
+                            >
+                                Wis alles
+                            </button>
+                        )}
+                    </div>
+
                 </div>
                 
                 {/* EC Section */}

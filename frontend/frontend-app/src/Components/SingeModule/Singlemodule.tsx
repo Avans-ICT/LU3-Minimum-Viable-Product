@@ -1,13 +1,23 @@
 import React from 'react';
 import type Module from "../../domain/entities/module.entity"
 
-const SingleModule: React.FC<Module> = ({ 
+interface SingleModuleProps extends Module {
+    isFavorite?: boolean;
+    onToggleFavorite?: (moduleId: string) => void | Promise<void>;
+}
+
+const SingleModule: React.FC<SingleModuleProps> = ({ 
     name, 
     studycredit, 
     shortdescription, 
     id, 
-    location 
+    location,
+    isFavorite = false,
+    onToggleFavorite
 }) => {
+    const handleToggle = () => {
+        if (onToggleFavorite) onToggleFavorite(id);
+    };
     return (
         <div className="card h-100 shadow-sm">
             <div className="card-body d-flex flex-column">
@@ -20,9 +30,18 @@ const SingleModule: React.FC<Module> = ({
                             <i className="bi bi-geo-alt"></i> {location}
                         </small>
                     </p>
-                    <a href={`/module/${id}`} className="btn btn-primary btn-sm w-100">
-                        Bekijk Module
-                    </a>
+                    <div className="d-grid gap-2">
+                        <button
+                            type="button"
+                            className={isFavorite ? 'btn btn-danger btn-sm' : 'btn btn-outline-danger btn-sm'}
+                            onClick={handleToggle}
+                        >
+                            {isFavorite ? 'Favoriet' : 'Voeg toe aan favorieten'}
+                        </button>
+                        <a href={`/module/${id}`} className="btn btn-primary btn-sm w-100">
+                            Bekijk Module
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

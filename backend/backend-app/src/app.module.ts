@@ -6,6 +6,7 @@ import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
 import { APP_GUARD } from "@nestjs/core";
 import { RecommendationEventModule } from "./recommendation-event.module";
 import { ModulesModule } from "./module.module" ;
+import { favoriteModule } from "./favorite.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ModulesModule } from "./module.module" ;
     AuthModule,
     RecommendationEventModule,
     ModulesModule,
+    favoriteModule,
   ],
   providers: [
     {
