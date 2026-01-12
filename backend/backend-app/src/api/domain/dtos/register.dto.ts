@@ -1,4 +1,13 @@
-import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
+import { IsEmail, IsString, MinLength, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class ProfileDto {
+    @IsString()
+    firstName: string;
+
+    @IsString()
+    lastName: string;
+}
 
 export class RegisterDto {
     @IsEmail()
@@ -8,9 +17,7 @@ export class RegisterDto {
     @MinLength(8)
     password: string;
 
-    @IsString()
-    firstName: string;
-
-    @IsString()
-    lastName: string;
+    @ValidateNested()
+    @Type(() => ProfileDto)
+    profile: ProfileDto;
 }

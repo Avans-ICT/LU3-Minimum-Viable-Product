@@ -1,4 +1,3 @@
-// auth.ts
 export function setCSRFToken(token: string) {
     localStorage.setItem("csrf_token", token);
 }

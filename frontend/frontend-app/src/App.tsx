@@ -8,7 +8,9 @@ import Header from "./Components/Header.tsx"
 import ModulePage from "./Pages/ModulePage/ModulePage.tsx";
 import { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
 import { AuthProvider } from "./auth/AuthContext.tsx";
+import RecommendationPage from "./Pages/RecommendationPage.tsx"
 import "./Colors.css"
+import ProfilePage from "./Pages/ProfilePage.tsx";
 
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                         <Route path="/module/:id" element={<ProtectedRoute><SingleModulePage /></ProtectedRoute>} />
                         <Route path="/allmodules" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
+                        <Route path="/recommendations" element={<ProtectedRoute><RecommendationPage /></ProtectedRoute>} />
+                        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                     </Routes>
                 </Router>
             </AuthProvider>   

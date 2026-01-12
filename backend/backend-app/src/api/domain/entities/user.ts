@@ -1,8 +1,11 @@
-export class User {
+import { Profile } from "./profile";
+
+export class UserEntity {
   constructor(
-    public readonly id: string,
-    public readonly email: string,
-    public readonly passwordHash: string,
-    public readonly createdAt: Date,
+    public id: string,
+    public email: string,
+    public password: string,
+    public profile: Profile,
+    public refreshToken?: string,
   ) {}
 }
