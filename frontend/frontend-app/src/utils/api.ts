@@ -26,7 +26,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
   if (!path.endsWith("/me") && res.status === 401) {
     const refreshed = await callGlobalRefreshAuth();
     if (refreshed) {
-      res = await doFetch(); // ✅ nu met nieuw CSRF-token
+      res = await doFetch(); 
     }
   }
 
