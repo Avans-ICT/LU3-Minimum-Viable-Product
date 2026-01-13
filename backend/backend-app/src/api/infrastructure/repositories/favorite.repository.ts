@@ -11,11 +11,11 @@ export class FavoriteRepository {
 
 
 async addFavorite(userID: string, moduleID: string): Promise<User | null> {
-    return this.userModel.findByIdAndUpdate(userID,{ $addToSet: { favorites: moduleID } },{ new: true }).exec();
+    return this.userModel.findByIdAndUpdate({ $eq: userID },{ $addToSet: { favorites: moduleID } },{ new: true }).exec();
   }
 
 async removeFavorite(userID: string, moduleID: string): Promise<User | null> {
-  return this.userModel.findByIdAndUpdate( userID,{ $pull: { favorites: moduleID } },{ new: true }).exec();
+  return this.userModel.findByIdAndUpdate({ $eq: userID },{ $pull: { favorites: moduleID } },{ new: true }).exec();
 }
 
   async getFavorites(userID: string): Promise<string[] | null> {
