@@ -13,7 +13,7 @@ export class FavoriteService {
         const user = await this.FavoriteRepository.addFavorite(userID, moduleID);
         
         if (!user) {
-        throw new NotFoundException(`User with ID ${userID} not found`);
+            throw new NotFoundException(`User with ID ${userID} not found`);
         }
 
         return user;

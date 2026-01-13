@@ -1,9 +1,7 @@
-import {IsString} from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class FavoriteDto {
-    @IsString()
-    moduleID: string;
-
-    @IsString()
-    userID: string;
+  @IsString()
+  @IsNotEmpty()
+  moduleID: string;
 }
