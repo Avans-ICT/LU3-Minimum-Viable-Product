@@ -5,22 +5,22 @@ import { CsrfGuard } from 'src/csrf-guard';
 import { FavoriteDto } from '../domain/dtos/favorite.dto';
 
 @Controller('favorite')
-@UseGuards(AuthGuard('jwt'))
 export class FavoriteController {
     constructor(private readonly favoriteService: FavoriteService) { }
 
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     async getFavorites(@Req() req) {
         return this.favoriteService.getFavorites(req.user.userId);
     }
 
-    @UseGuards(CsrfGuard)
+    @UseGuards(CsrfGuard, AuthGuard('jwt'))
     @Post()
     async addFavorite(@Req() req, @Body() favoriteDto: FavoriteDto) {
         return this.favoriteService.addFavorite(req.user.userId, favoriteDto.moduleID);
     }
 
-    @UseGuards(CsrfGuard)
+    @UseGuards(CsrfGuard, AuthGuard('jwt'))
     @Delete()
     async removeFavorite(@Req() req, @Body() favoriteDto: FavoriteDto) {
         return this.favoriteService.removeFavorite(req.user.userId, favoriteDto.moduleID);
