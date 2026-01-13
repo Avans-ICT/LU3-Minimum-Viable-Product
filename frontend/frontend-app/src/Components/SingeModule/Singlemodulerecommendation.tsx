@@ -26,7 +26,7 @@ const SingleModuleRecommendation: React.FC<Props> = ({ recommendation, moduleDet
                     items: [
                         {
                             moduleId: moduleDetails.id,
-                            feedbackType: "LIKE",
+                            feedbackType: "LIKE" ,
                             value: 1,
                         },
                     ],
