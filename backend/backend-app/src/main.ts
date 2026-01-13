@@ -13,12 +13,12 @@ async function bootstrap() {
     });
   
     const configService = app.get(ConfigService);
-
+    const isProduction = configService.get<string>('NODE_ENV') === 'production';
     app.useGlobalFilters(new ValidationExceptionFilter());
     app.getHttpAdapter().getInstance().trustProxy = true;
     app.use(
         helmet({
-            contentSecurityPolicy: false, // moet in productie anders
+            contentSecurityPolicy: isProduction
         }),
     );
     app.use(cookieParser());
