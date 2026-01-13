@@ -47,3 +47,8 @@
 .btn-custom-red:active {
     transform: translateY(0) !important;
 }
+
+
+.nav-link {
+    color: white;
+}
