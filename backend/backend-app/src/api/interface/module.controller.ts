@@ -1,8 +1,11 @@
-import { Controller, Get, Param, Post, Body } from "@nestjs/common";
+import { Controller, Get, Param, Post, Body, UseGuards } from "@nestjs/common";
 import { ModuleService } from "../application/module.service";
 import { ModulesBatchDto } from "../domain/dtos/modulebatch.dto";
+import { CsrfGuard } from "src/csrf-guard";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("modules")
+@UseGuards(AuthGuard('jwt'))
 export class ModuleController {
     constructor(private readonly moduleService: ModuleService) { }
 
@@ -16,6 +19,7 @@ export class ModuleController {
         return this.moduleService.getAllModules();
     }
 
+    @UseGuards(CsrfGuard)
     @Post("/batch")
     async getModulesByIds(@Body() dto: ModulesBatchDto) {
         return this.moduleService.getModulesByIds(dto.ids);

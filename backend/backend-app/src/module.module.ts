@@ -17,6 +17,6 @@ export class ModulesModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(ModuleController); // alleen voor AuthController
+      .forRoutes(ModuleController);
   }
 }

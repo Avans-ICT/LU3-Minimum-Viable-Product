@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export default function Header() {
     const { profile, loading, logout } = useAuth();
@@ -34,22 +35,36 @@ export default function Header() {
                                         </Link>
                                     </li>
 
-                                    <li className="nav-item">
-                                        <Link
-                                            className="btn btn-outline-light ms-2"
-                                            to="/profile"
-                                        >
-                                            Profiel bewerken
-                                        </Link>
-                                    </li>
-                                    
-                                    <li className="nav-item">
+                                    <li className="nav-item dropdown ms-2">
                                         <button
-                                            className="btn btn-outline-light ms-2"
-                                            onClick={logout}
+                                            className="btn btn-outline-light dropdown-toggle"
+                                            type="button"
+                                            id="userDropdown"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
                                         >
                                             {profile.firstName} {profile.lastName}
                                         </button>
+
+                                        <ul
+                                            className="dropdown-menu dropdown-menu-end"
+                                            aria-labelledby="userDropdown"
+                                        >
+                                            <li>
+                                                <Link className="dropdown-item" to="/profile">
+                                                    Profiel bewerken
+                                                </Link>
+                                            </li>
+                                            <li><hr className="dropdown-divider" /></li>
+                                            <li>
+                                                <button
+                                                    className="dropdown-item text-danger"
+                                                    onClick={logout}
+                                                >
+                                                    Uitloggen
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </>
                             ) : (
