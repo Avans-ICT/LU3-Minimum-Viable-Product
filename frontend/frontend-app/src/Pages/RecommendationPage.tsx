@@ -17,6 +17,7 @@ function RecommendationPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [eventId, setEventId] = useState<string | null>(null);
+    const [favorites, setFavorites] = useState<string[]>([]);
 
     const [k, /*setK*/] = useState<number>(5);
     const effectRan = useRef(false);
@@ -98,6 +99,43 @@ function RecommendationPage() {
         fetchRecommendations();
     }, [hasProfile, profile]);
 
+    useEffect(() => {
+        const fetchFavorites = async () => {
+            try {
+                const res = await apiFetch('/favorite');
+                if (!res.ok) return;
+                const favs: string[] = await res.json();
+                setFavorites(favs);
+            } catch (e) {
+                console.error('Failed to load favorites', e);
+            }
+        };
+
+        fetchFavorites();
+    }, []);
+
+    const toggleFavorite = async (moduleId: string) => {
+        const isFav = favorites.includes(moduleId);
+        const method = isFav ? 'DELETE' : 'POST';
+
+        try {
+            const res = await apiFetch('/favorite', {
+                method,
+                body: JSON.stringify({ moduleID: moduleId }),
+            });
+
+            if (!res.ok) return;
+
+            setFavorites(prev =>
+                isFav
+                    ? prev.filter(id => id !== moduleId)
+                    : [...prev, moduleId]
+            );
+        } catch (err) {
+            console.error('Toggle favorite failed', err);
+        }
+    };
+
     if (!hasProfile) {
         return (
             <div className="container mt-5">
@@ -126,10 +164,14 @@ function RecommendationPage() {
                             recommendation={recommendation}
                             moduleDetails={moduleDetails!}
                             eventId={eventId!}
+                            isFavorite={favorites.includes(moduleDetails!.id)}
+                            onToggleFavorite={toggleFavorite}
                         />
                     ))
                 ) : (
-                    <div className="alert alert-info">Geen aanbevelingen gevonden.</div>
+                    <div className="alert alert-info">
+                        Geen aanbevelingen gevonden.
+                    </div>
                 )}
             </div>
         </div>

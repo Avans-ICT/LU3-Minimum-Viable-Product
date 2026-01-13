@@ -3,14 +3,17 @@ import type RecommendationModule from "../../domain/entities/recommendation.modu
 import type Module from "../../domain/entities/module.entity";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../../utils/api";
+import { useState } from "react";
 
 interface Props {
   recommendation: RecommendationModule;
   moduleDetails: Module;
   eventId: string;
+  isFavorite: boolean;
+  onToggleFavorite: (moduleId: string) => void;
 }
 
-const SingleModuleRecommendation: React.FC<Props> = ({ recommendation, moduleDetails, eventId }) => {
+const SingleModuleRecommendation: React.FC<Props> = ({ recommendation, moduleDetails, eventId, isFavorite, onToggleFavorite, }) => {
     const { rank, score, reasons } = recommendation;
     const { name, shortdescription, studycredit, location } = moduleDetails;
     const navigate = useNavigate();
@@ -84,16 +87,32 @@ const SingleModuleRecommendation: React.FC<Props> = ({ recommendation, moduleDet
                         <span className="badge bg-warning text-dark fs-6">
                             Rank #{rank}
                         </span>
-                        <small className="text-muted">Match: {(score * 100).toFixed(1)}%</small>
+                        <small className="text-muted">
+                            Match: {(score * 100).toFixed(1)}%
+                        </small>
                     </div>
 
-                    <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={handleViewModule}
-                    >
-                        Bekijk Module
-                    </button>
+                    <div className="d-flex gap-2">
+                        <button
+                            type="button"
+                            className={
+                                isFavorite
+                                    ? 'btn btn-danger btn-sm'
+                                    : 'btn btn-outline-danger btn-sm'
+                            }
+                            onClick={() => onToggleFavorite(moduleDetails.id)}
+                        >
+                            {isFavorite ? 'Favoriet' : 'Voeg toe aan favorieten'}
+                        </button>
+
+                        <button
+                            type="button"
+                            className="btn btn-sm btn-outline-primary"
+                            onClick={handleViewModule}
+                        >
+                            Bekijk Module
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

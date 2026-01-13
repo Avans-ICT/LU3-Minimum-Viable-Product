@@ -1,25 +1,27 @@
-import { Controller, Get, Param, Body, Post, Delete} from "@nestjs/common";
-import { FavoriteService } from "../application/favorite.service";
-import { User } from "../infrastructure/schemas/user.schema";
-import { FavoriteDto } from "../domain/dtos/favorite.dto";
+import { Controller, Get, Post, Delete, Body, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { FavoriteService } from '../application/favorite.service';
+import { CsrfGuard } from 'src/csrf-guard';
 
-@Controller("favorite")
+@Controller('favorite')
+@UseGuards(AuthGuard('jwt'))
 export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
+  @Get()
+  async getFavorites(@Req() req) {
+    return this.favoriteService.getFavorites(req.user.userId);
+  }
+
+  @UseGuards(CsrfGuard)
   @Post()
-  async addFavorite(@Body() favoriteDto: FavoriteDto): Promise<User> {
-    return this.favoriteService.addFavorite(favoriteDto.userID, favoriteDto.moduleID);
+  async addFavorite(@Req() req, @Body('moduleID') moduleID: string) {
+    return this.favoriteService.addFavorite(req.user.userId, moduleID);
   }
 
-  @Get(":userId")
-  async getFavorites(@Param("userId") userId: string) {
-    return this.favoriteService.getFavorites(userId);
-  }
-
+  @UseGuards(CsrfGuard)
   @Delete()
-  async removeFavorite(@Body() favoriteDto: FavoriteDto): Promise<User> {
-    return this.favoriteService.removeFavorite(favoriteDto.userID, favoriteDto.moduleID);
+  async removeFavorite(@Req() req, @Body('moduleID') moduleID: string) {
+    return this.favoriteService.removeFavorite(req.user.userId, moduleID);
   }
-
 }
