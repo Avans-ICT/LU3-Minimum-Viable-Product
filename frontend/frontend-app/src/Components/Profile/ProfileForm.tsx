@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../../utils/api";
 import { useAuth } from "../../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 function ProfileForm() {
     const { profile, refreshAuth } = useAuth();
@@ -14,6 +16,10 @@ function ProfileForm() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false); // nieuwe state
+    const navigate = useNavigate();
+    const hadProfileRef = useRef(
+        !!profile?.interests && profile.interests.trim() !== ""
+    );
 
     // synchroniseren als profile later laadt
     useEffect(() => {
@@ -54,7 +60,11 @@ function ProfileForm() {
             }
 
             await refreshAuth();
-            setSuccess(true); // succesmelding tonen
+            setSuccess(true);
+
+            if (!hadProfileRef.current) {
+                navigate("/recommendations");
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : "Onbekende fout");
         } finally {
