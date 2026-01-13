@@ -133,7 +133,7 @@ export default function ModulePage() {
 
                     <div className="card shadow-sm mb-4">
                         <div className="card-body">
-                            <h5 className="card-title mb-3">Description</h5>
+                            <h5 className="card-title mb-3">Beschrijving</h5>
                             <p className="card-text">{module.description}</p>
                         </div>
                     </div>
@@ -151,17 +151,17 @@ export default function ModulePage() {
                                 </div>
                                 <div className="col-md-6">
                                     <p className="mb-2">
-                                        <strong>Study Credits:</strong> {module.studycredit}
+                                        <strong>Studie Punten:</strong> {module.studycredit}
                                     </p>
                                 </div>
                                 <div className="col-md-6">
                                     <p className="mb-2">
-                                        <strong>Location:</strong> {module.location}
+                                        <strong>Locatie:</strong> {module.location}
                                     </p>
                                 </div>
                                 <div className="col-md-6">
                                     <p className="mb-2">
-                                        <strong>Available Spots:</strong> 
+                                        <strong>Beschikbare Plekken:</strong> 
                                         <span className={"ms-2"}>
                                             {module.available_spots}
                                         </span>
@@ -169,18 +169,13 @@ export default function ModulePage() {
                                 </div>
                                 <div className="col-md-6">
                                     <p className="mb-2">
-                                        <strong>Start Date:</strong> {new Date(module.start_date).toLocaleDateString()}
+                                        <strong>Start Datum:</strong> {new Date(module.start_date).toLocaleDateString()}
                                     </p>
                                 </div>
                                 <div className="col-md-6">
                                     <p className="mb-2">
-                                        <strong>Difficulty:</strong> 
+                                        <strong>Moeilijkheid:</strong> 
                                         <span className="ms-2">{module.estimated_difficulty}/10</span>
-                                    </p>
-                                </div>
-                                <div className="col-md-6">
-                                    <p className="mb-2">
-                                        <strong>Popularity Score:</strong> {module.popularity_score}
                                     </p>
                                 </div>
                             </div>
@@ -190,7 +185,7 @@ export default function ModulePage() {
                     {module.content && (
                         <div className="card shadow-sm mb-4">
                             <div className="card-body">
-                                <h5 className="card-title mb-3">Content</h5>
+                                <h5 className="card-title mb-3">Inhoud</h5>
                                 <p className="card-text">{module.content}</p>
                             </div>
                         </div>
@@ -199,7 +194,7 @@ export default function ModulePage() {
 
                     <div className="card shadow-sm mb-4">
                         <div className="card-body">
-                            <h5 className="card-title mb-3">Learning Outcomes</h5>
+                            <h5 className="card-title mb-3">Leeruitkomsten</h5>
                             <p className="card-text">{module.learningoutcomes}</p>
                         </div>
                     </div>

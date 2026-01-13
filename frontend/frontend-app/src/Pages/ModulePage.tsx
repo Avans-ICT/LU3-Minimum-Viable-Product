@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import SingleModule from "../Components/SingeModule/Singlemodule";
 import Filters from "../Components/FilterComponent/Filter"
 import type { FilterState } from "../Components/FilterComponent/Filter"
@@ -34,6 +35,15 @@ function ModulePage() {
 
         fetchFavorites();
     }, []);
+
+    // Activate 'showFavorites' when query param is present
+    const [searchParams] = useSearchParams();
+    useEffect(() => {
+        const show = searchParams.get('showFavorites');
+        if (show === '1' || show === 'true') {
+            setFilters(prev => ({ ...prev, showFavorites: true }));
+        }
+    }, [searchParams]);
 
     const handleToggleFavorite = async (moduleId: string) => {
         try {

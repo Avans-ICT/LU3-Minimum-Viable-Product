@@ -71,12 +71,6 @@ function Filters({ filters, setFilters }: FiltersProps) {
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4 className="mb-0">Filters</h4>
                     <div>
-                        <button
-                            className={filters.showFavorites ? 'btn btn-sm btn-danger me-2' : 'btn btn-sm btn-outline-danger me-2'}
-                            onClick={toggleShowFavorites}
-                        >
-                            toon favorieten
-                        </button>
                         {hasActiveFilters && (
                             <button 
                                 className="btn btn-sm btn-outline-danger"
@@ -88,6 +82,21 @@ function Filters({ filters, setFilters }: FiltersProps) {
                     </div>
 
                 </div>
+                <hr />
+
+                <div className="mb-3 p-2">
+                    <h5 className="mb-2">Favorieten</h5>
+                    <button 
+                        className={filters.showFavorites ? 'btn btn-success shadow' : 'btn btn-danger shadow'} 
+                        onClick={toggleShowFavorites}
+                    >
+                        {filters.showFavorites ? '✓ Actief' : 'Toon favorieten'}
+                    </button>
+                </div>
+                <hr />
+
+
+
                 
                 {/* EC Section */}
                 <div className="mb-4">
