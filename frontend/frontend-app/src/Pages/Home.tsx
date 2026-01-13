@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Home()  {
   
     return (
@@ -11,19 +13,33 @@ function Home()  {
                         <h1 className="fw-bold mb-0">Slimmer.</h1>
                         <h1 className="fw-bold mb-4">Met AI</h1>
                     
-                        {/* Tekst eronder */}
                         <p className="lead">
-                        Ontworpen door Avans
+                            Ontworpen door Avans
                         </p>
                     </div>
                 </div>
-
-                <div className="row mt-4">
+                
+                <div className="row mt-5 g-4">
                     <div className="col-12 col-md-6">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error repellendus facilis eius deserunt non, harum ullam eligendi odit voluptatum reiciendis libero commodi, fuga ipsum iure doloribus quos! Iure ea illum, doloribus modi molestias vitae adipisci dolorum quasi at corporis culpa inventore facere voluptas sed quia? Magni soluta inventore laborum enim? Consequatur perferendis illo, eaque doloremque voluptatum inventore sed accusantium tempore dolore architecto? Sit natus iure ratione? Tenetur, sequi omnis iste id magnam dolores aperiam beatae cum earum ipsam deleniti cumque vel odit veritatis repellendus sint a nemo illum repellat nam obcaecati nulla velit! Officiis aliquid distinctio ea mollitia. Repellat minus nulla quia voluptates, aut placeat obcaecati qui atque error. Expedita cum incidunt natus, laudantium nulla dolore sed nesciunt quod nostrum harum necessitatibus recusandae voluptatum officia. Itaque iste debitis nemo optio odio maxime quidem dignissimos impedit, nihil culpa aut rem obcaecati, nesciunt asperiores! Blanditiis tempora corporis voluptate facere saepe explicabo, tenetur voluptas dolor vel. Minima error quisquam consequuntur qui assumenda odio, omnis commodi suscipit, delectus eligendi consectetur aliquam dolorum. Veniam error temporibus quos. Corrupti ex similique placeat cupiditate maxime. Possimus sint adipisci repudiandae dolor impedit laudantium aliquam recusandae assumenda neque maxime ut quod, aut modi expedita atque. Dolorem nam excepturi odit?</p>
+                        <Link to="/allmodules" type="button" className="btn btn-custom-red btn-lg w-100 p-4">
+                            <strong style={{fontSize: '1.3rem'}}>Bekijk alle modules</strong>
+                        </Link>
                     </div>
                     <div className="col-12 col-md-6">
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil, qui amet inventore blanditiis consequatur, recusandae iste corrupti nostrum consequuntur aperiam ut! Alias nihil at non dignissimos omnis. Harum, magni voluptatibus exercitationem cupiditate, explicabo est a velit reprehenderit asperiores delectus nulla nemo quo ad odio excepturi. Est necessitatibus, quisquam consequatur totam doloremque voluptatum et beatae voluptatem accusamus quasi id dicta vero earum cumque explicabo dignissimos consectetur quibusdam nobis, iusto at accusantium ullam rem sit! Modi qui accusamus non facilis reprehenderit incidunt, ducimus quam quis mollitia similique exercitationem maiores totam blanditiis illum quisquam magni ad aliquam iusto quaerat nobis numquam sunt, dignissimos atque delectus. Quae molestiae laborum saepe voluptatibus, quibusdam reiciendis amet! Sint saepe quos, consequatur ad ratione cumque cum culpa autem modi doloribus repudiandae asperiores beatae quae nostrum minus optio placeat nobis iusto. Eaque alias ipsam optio fugiat perspiciatis quam facilis quos accusamus, sequi, quia odio deserunt earum modi facere deleniti. Excepturi, laudantium? Optio numquam ullam temporibus deserunt cumque aperiam veniam est! Reiciendis necessitatibus perspiciatis, quidem iste vel illo quod tempore qui pariatur sed fugit autem officia, unde saepe mollitia neque suscipit voluptates, illum adipisci voluptatibus quo? Soluta dolore itaque, nisi ut, doloribus ab nulla accusamus natus hic earum, eum facere!</p>
+                        <Link to="/recommendations" type="button" className="btn btn-custom-ai btn-lg w-100 p-4 position-relative">
+                            <strong style={{fontSize: '1.3rem'}}>AI-powered suggesties</strong>
+                        </Link>
+                    </div>
+                </div>
+                
+                <div className="row mt-5 g-4">
+                    <div className="col-12 col-md-6">
+                        <h4 className="fw-bold mb-3">Klassieke modulekeuze</h4>
+                        <p>Op deze pagina kun je alle beschikbare modules rustig bekijken. Je ziet per module wat de inhoud is, wat je leert en voor wie de module bedoeld is. Door te scrollen en te vergelijken kun je zelf ontdekken welke modules aansluiten bij jouw interesses en niveau. Deze manier van kiezen geeft je volledige controle en is ideaal als je al een idee hebt van wat je wilt, of als je graag alles overzichtelijk naast elkaar ziet. Neem de tijd om de modules door te lezen en maak een keuze die het beste past bij jouw leerroute en toekomstplannen.</p>
+                    </div>
+                    <div className="col-12 col-md-6">
+                        <h4 className="fw-bold mb-3">Slimme AI-assistentie</h4>
+                        <p>Weet je nog niet precies welke module bij je past? Dan helpt onze slimme AI-assistent je op weg. Op basis van jouw interesses, niveau en doelen stelt de AI een persoonlijke top 5 van modules voor. Deze suggesties zijn bedoeld als hulpmiddel en geven je inspiratie, maar zijn geen definitieve keuzes. De AI kan zich vergissen en kent jou niet zoals jij jezelf kent. Gebruik de aanbevelingen daarom als startpunt om verder te ontdekken welke modules echt bij jou passen.</p>
                     </div>
                 </div>
             </div>

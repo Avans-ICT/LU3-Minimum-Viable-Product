@@ -3,7 +3,6 @@ import type RecommendationModule from "../../domain/entities/recommendation.modu
 import type Module from "../../domain/entities/module.entity";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../../utils/api";
-import { useState } from "react";
 
 interface Props {
   recommendation: RecommendationModule;

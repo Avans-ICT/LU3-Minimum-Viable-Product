@@ -5,7 +5,7 @@ import Register from "./Pages/Register.tsx"
 import NotFound from "./Pages/NotFound.tsx"
 import SingleModulePage from "./Pages/SingleModulePage.tsx"
 import Header from "./Components/Header.tsx"
-import ModulePage from "./Pages/ModulePage/ModulePage.tsx";
+import ModulePage from "./Pages/ModulePage.tsx";
 import { ProtectedRoute } from "./auth/ProtectedRoute.tsx";
 import { AuthProvider } from "./auth/AuthContext.tsx";
 import RecommendationPage from "./Pages/RecommendationPage.tsx"

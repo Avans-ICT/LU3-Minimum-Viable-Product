@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from 'react';
 import type Module from "../../domain/entities/module.entity"
 
@@ -38,9 +39,9 @@ const SingleModule: React.FC<SingleModuleProps> = ({
                         >
                             {isFavorite ? 'Favoriet' : 'Voeg toe aan favorieten'}
                         </button>
-                        <a href={`/module/${id}`} className="btn btn-primary btn-sm w-100">
+                        <Link to={`/module/${id}`} className="btn btn-primary btn-sm w-100">
                             Bekijk Module
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

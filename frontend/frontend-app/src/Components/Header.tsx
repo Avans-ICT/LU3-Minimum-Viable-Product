@@ -10,7 +10,7 @@ export default function Header() {
             <nav className="navbar navbar-expand-lg navbar-dark bg-gray5">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">
-                        Avans KeuzeCompas
+                        Avans Keuzekompas
                     </Link>
 
                     <div className="collapse navbar-collapse show">

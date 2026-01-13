@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import "./modulepage.css";
-import SingleModule from "../../Components/SingeModule/Singlemodule";
-import Filters from "../../Components/FilterComponent/Filter"
-import type { FilterState } from "../../Components/FilterComponent/Filter"
-import { apiFetch } from "../../utils/api";
-import type Module from "../../domain/entities/module.entity"
+import SingleModule from "../Components/SingeModule/Singlemodule";
+import Filters from "../Components/FilterComponent/Filter"
+import type { FilterState } from "../Components/FilterComponent/Filter"
+import { apiFetch } from "../utils/api";
+import type Module from "../domain/entities/module.entity"
 
 function ModulePage() {
     

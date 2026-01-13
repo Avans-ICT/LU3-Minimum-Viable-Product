@@ -13,3 +13,37 @@
 .bg-gray5 {
     background-color: #c5202b; 
 }
+
+.btn-custom-red {
+    background-color: #c5202b !important;
+    border-color: #c5202b !important;
+    color: white !important;
+    transition: all 0.3s ease;
+}
+
+.btn-custom-red:hover {
+    background-color: #a01a23 !important;
+    border-color: #a01a23 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(197, 32, 43, 0.3);
+}
+
+.btn-custom-ai {
+    background: linear-gradient(135deg, #c5202b 0%, #E14900 100%) !important;
+    border: none !important;
+    color: white !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(197, 32, 43, 0.4);
+}
+
+.btn-custom-ai:hover {
+    background: linear-gradient(135deg, #a01a23 0%, #E14900 100%) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(197, 32, 43, 0.5);
+}
+
+.btn-custom-ai:active,
+.btn-custom-red:active {
+    transform: translateY(0) !important;
+}

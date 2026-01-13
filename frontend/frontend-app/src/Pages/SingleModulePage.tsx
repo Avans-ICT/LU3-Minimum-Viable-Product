@@ -10,8 +10,23 @@ export default function ModulePage() {
     const [module, setModule] = useState<Module | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [favorites, setFavorites] = useState<string[]>([]);
+    const [toggling, setToggling] = useState<boolean>(false);
 
     useEffect(() => {
+        const fetchFavorites = async () => {
+            try {
+                const res = await apiFetch('/favorite');
+                if (!res.ok) return;
+                const favs: string[] = await res.json();
+                setFavorites(favs);
+            } catch (e) {
+                console.error('Failed to load favorites', e);
+            }
+        };
+
+        fetchFavorites();
+
         const fetchModule = async () => {
             try {
                 setLoading(true);
@@ -37,6 +52,30 @@ export default function ModulePage() {
             fetchModule();
         }
     }, [id]);
+
+    const toggleFavorite = async (moduleId: string) => {
+        if (toggling) return;
+        setToggling(true);
+        const isFav = favorites.includes(moduleId);
+        const method = isFav ? 'DELETE' : 'POST';
+
+        try {
+            const res = await apiFetch('/favorite', {
+                method,
+                body: JSON.stringify({ moduleID: moduleId }),
+            });
+
+            if (!res.ok) return;
+
+            setFavorites(prev =>
+                isFav ? prev.filter(id => id !== moduleId) : [...prev, moduleId]
+            );
+        } catch (err) {
+            console.error('Toggle favorite failed', err);
+        } finally {
+            setToggling(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -78,7 +117,16 @@ export default function ModulePage() {
                 <div className="col-lg-10 col-xl-8 mx-auto">
 
                     <div className="mb-4">
-                        <h1 className="display-5 fw-bold mb-2">{module.name}</h1>
+                        <div className="d-flex align-items-center justify-content-between mb-2">
+                            <h1 className="display-5 fw-bold mb-0">{module.name}</h1>
+                            <button
+                                className={favorites.includes(module.id) ? 'btn btn-danger btn-sm' : 'btn btn-outline-danger btn-sm'}
+                                onClick={() => toggleFavorite(module.id)}
+                                disabled={toggling}
+                            >
+                                {favorites.includes(module.id) ? 'Favoriet' : 'Voeg toe aan favorieten'}
+                            </button>
+                        </div>
                         <p className="text-muted lead">{module.shortdescription}</p>
                     </div>
 
