@@ -173,13 +173,18 @@ function RecommendationPage() {
 
     return (
         <div className="container mt-4">
-            <h2 className="mb-4">Aanbevolen modules</h2>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2 className="mb-0">Aanbevolen modules</h2>
 
-            {recommendationsWithModules.length > 0 && !feedbackSent && (
-                <button className="btn btn-outline-secondary mb-3" onClick={() => setShowFeedback(true)}>
-                    Geef feedback op aanbevelingen
-                </button>
-            )}
+                {recommendationsWithModules.length > 0 && !feedbackSent && (
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => setShowFeedback(true)}
+                    >
+                        Geef feedback
+                    </button>
+                )}
+            </div>
 
             <div className="d-flex flex-column gap-3">
                 {recommendationsWithModules.length > 0 ? (

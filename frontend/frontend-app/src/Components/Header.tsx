@@ -31,7 +31,7 @@ export default function Header() {
 
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/recommendations">
-                                            Recommendations
+                                            Suggesties
                                         </Link>
                                     </li>
 
@@ -52,7 +52,9 @@ export default function Header() {
                                         >
                                             <li>
                                                 <Link className="dropdown-item" to="/profile">
-                                                    Profiel bewerken
+                                                    {(!profile.interests || profile.interests === "")
+                                                        ? "Profiel maken"
+                                                        : "Profiel bewerken"}
                                                 </Link>
                                             </li>
                                             <li><hr className="dropdown-divider" /></li>
