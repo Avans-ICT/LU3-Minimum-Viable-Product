@@ -8,6 +8,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import jwt from 'jsonwebtoken';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import * as argon2 from 'argon2';
 
 describe('AuthService (integration)', () => {
     let authService: AuthService;
@@ -82,7 +83,8 @@ describe('AuthService (integration)', () => {
         const user = await authRepository.findByEmail('hash@test.com');
         if (user) {
             expect(user.password).not.toBe('plain-text');
-            expect(user.password).toMatch(/^\$2[aby]\$/);
+            const valid = await argon2.verify(user.password, 'plain-text');
+            expect(valid).toBe(true);
         }
     });
 
