@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Module, ModuleDocument } from "../schemas/module.schema";
-import { User } from "../schemas/user.schema";
 
 @Injectable()
 export class ModuleRepository {

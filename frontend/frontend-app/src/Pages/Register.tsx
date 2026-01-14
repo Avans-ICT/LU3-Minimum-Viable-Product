@@ -73,6 +73,9 @@ function Register() {
         if (!lastName.trim()) {
             return 'Email is verplicht';
         }
+
+        if (firstName.length > 25) return "Voornaam mag maximaal 25 tekens zijn";
+        if (lastName.length > 25) return "Achternaam mag maximaal 25 tekens zijn";
         
         if (!email.trim()) {
             return 'Email is verplicht';
@@ -100,7 +103,7 @@ function Register() {
                 <div className="col-md-8 col-lg-6">
                     <div className="card shadow">
                         <div className="card-body p-4">
-                            <h1 className="card-title text-center mb-4">Register</h1>
+                            <h1 className="card-title text-center mb-4">Registreren</h1>
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
@@ -174,7 +177,7 @@ function Register() {
                                         Registratie succesvol!
                                     </div>
                                 )}
-                                <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                                <button type="submit" className="btn btn-primary w-100 mb-4" disabled={loading}>
                                     {loading ? (
                                         <>
                                             <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -184,8 +187,10 @@ function Register() {
                                         "Registreren"
                                     )}
                                 </button>
+                                <p className="mb-1">heeft u al een account <a href="/login">log dan in</a>.</p>
                             </form>
                         </div>
+                        
                     </div>
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException, Logger } from "@nestjs/common";
-import { User } from "../infrastructure/schemas/user.schema";
 import { FavoriteRepository } from "../infrastructure/repositories/favorite.repository";
 
 
@@ -7,34 +6,42 @@ import { FavoriteRepository } from "../infrastructure/repositories/favorite.repo
 @Injectable()
 export class FavoriteService {
     private readonly logger = new Logger(FavoriteService.name);
-    constructor(private readonly FavoriteRepository: FavoriteRepository) { }
+    constructor(
+        private readonly favoriteRepository: FavoriteRepository,
+    ) {}
 
-    async addFavorite(userID: string, moduleID: string): Promise<User> {
-        const user = await this.FavoriteRepository.addFavorite(userID, moduleID);
+    async addFavorite(userID: string, moduleID: string): Promise<string> {
+        const user = await this.favoriteRepository.addFavorite(userID, moduleID);
         
+        //checken of module bestaat
+        const moduleExists = await this.favoriteRepository.findById(moduleID);
+        if (!moduleExists) throw new NotFoundException(`Module bestaat niet`);
+
         if (!user) {
-            throw new NotFoundException(`User with ID ${userID} not found`);
+            throw new NotFoundException(`Kon niet toevoegen aan favorieten`);
         }
 
-        return user;
+        return "succes";
     }
 
-    async removeFavorite(userID: string, moduleID: string): Promise<User | any> {
-        const user = await this.FavoriteRepository.removeFavorite(userID, moduleID);
+    async removeFavorite(userID: string, moduleID: string): Promise<string> {
+        const user = await this.favoriteRepository.removeFavorite(userID, moduleID);
+
+        //checken of module bestaat
+        const moduleExists = await this.favoriteRepository.findById(moduleID);
+        if (!moduleExists) throw new NotFoundException(`Module bestaat niet`);
 
         if (!user) {
-        throw new NotFoundException(`Could not remove ${moduleID} from ${userID}`);
+            throw new NotFoundException(`Kon niet verwijderen uit favorieten`);
         }
 
-        return user;
-
-
+        return "succes";
     }
 
     async getFavorites(userID: string): Promise<string[]> {
-        const favorites = await this.FavoriteRepository.getFavorites(userID);
+        const favorites = await this.favoriteRepository.getFavorites(userID);
         if (favorites === null) {
-            throw new NotFoundException(`User with ID ${userID} not found`);
+            throw new NotFoundException(`Kon favorieten niet ophalen`);
         }
         return favorites;
     }

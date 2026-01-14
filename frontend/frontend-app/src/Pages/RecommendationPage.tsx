@@ -24,8 +24,8 @@ function RecommendationPage() {
     const [showFeedback, setShowFeedback] = useState(false);
     const [feedbackSent, setFeedbackSent] = useState(false);
 
-    if (authLoading) return <div>Loading profile...</div>;
-    if (!profile) return <div>Profile not found</div>;
+    if (authLoading) return <div>Profiel laden...</div>;
+    if (!profile) return <div>Profiel niet gevonden</div>;
 
     const hasProfile = typeof profile.interests === "string" && profile.interests.trim() !== "";
 
@@ -157,7 +157,7 @@ function RecommendationPage() {
         );
     }
 
-    if (loading) return <div>Loading recommendations...</div>;
+    if (loading) return <div>Suggesties ophalen...</div>;
     if (error) return <div className="alert alert-danger">Error: {error}</div>;
 
     // Type-safe mapping

@@ -16,7 +16,7 @@ export class ModuleService {
 
         if (!doc) {
             this.logger.warn(`Module not found with ID: ${id}`);
-            throw new NotFoundException(`Module with ID ${id} not found`);
+            throw new NotFoundException(`Module met ID ${id} was niet gevonden`);
         }
         this.logger.log(`Module found with ID: ${id}`);
         return toModuleEntity(doc);
@@ -27,7 +27,7 @@ export class ModuleService {
         const docs = await this.moduleRepository.findAll();
         if (docs.length === 0) {
             this.logger.warn(`No modules found`);
-            throw new NotFoundException("No modules found");
+            throw new NotFoundException("Geen modules gevonden");
         }
 
         this.logger.log(`Fetched ${docs.length} modules`);
@@ -41,7 +41,7 @@ export class ModuleService {
 
         if (docs.length === 0) {
             this.logger.warn(`No modules found`);
-            throw new NotFoundException("No modules found");
+            throw new NotFoundException("Geen modules gevonden");
         }
         this.logger.log(`Modules found`);
 

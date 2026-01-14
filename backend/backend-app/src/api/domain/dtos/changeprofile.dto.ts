@@ -1,14 +1,18 @@
-import { IsOptional, IsString, IsNumber, IsIn } from 'class-validator';
+import { IsOptional, IsString, IsNumber, IsIn, MaxLength } from 'class-validator';
 
 export class ChangeProfileDto {
     @IsOptional()
+    @MaxLength(25)
     @IsString()
     firstName?: string;
 
+    
     @IsOptional()
+    @MaxLength(25)
     @IsString()
     lastName?: string;
 
+    @MaxLength(1000)
     @IsString()
     interests: string;
 

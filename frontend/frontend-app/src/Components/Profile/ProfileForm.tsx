@@ -39,6 +39,11 @@ function ProfileForm() {
             return;
         }
 
+        if (interests.length > 1000) {
+            setError("Interesses mogen maximaal 1000 tekens bevatten");
+            return;
+        }
+        
         if (!location || !level || !studycredits) {
             setError("Alle velden moeten ingevuld zijn");
             return;

@@ -33,7 +33,7 @@ function Logout() {
 
     return (
         <div>
-            <h1>Logout</h1>
+            <h1>Uitloggen</h1>
             <button onClick={handleLogout} disabled={loading}>
                 {loading ? "Uitloggen..." : "Uitloggen"}
             </button>

@@ -122,7 +122,7 @@ function ModulePage() {
         return true;
     });
 
-    if (loading) return <div>Loading modules...</div>;
+    if (loading) return <div>Modules inladen...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -144,7 +144,7 @@ function ModulePage() {
                         </div>
                         
                         <h5 className="mb-3">
-                            Showing {Modulefilter.length} of {modules.length} modules
+                            {Modulefilter.length} van de {modules.length} modules worden getoont
                         </h5>
                         <div className="row">
                             {Modulefilter.map((module) => (
@@ -173,7 +173,7 @@ function ModulePage() {
                         </div>
                         {Modulefilter.length === 0 && (
                             <div className="alert alert-info">
-                                No modules found matching your filters.
+                                Geen modules gevonden die voldoen aan uw eisen.
                             </div>
                         )}
                     </div>
