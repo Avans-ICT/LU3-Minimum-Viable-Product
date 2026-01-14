@@ -24,7 +24,7 @@ export default function Header() {
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/allmodules">
+                                        <Link className="nav-link" to="/allmodules?showFavorites=0">
                                             Modules
                                         </Link>
                                     </li>

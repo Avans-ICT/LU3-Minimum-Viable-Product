@@ -40,9 +40,12 @@ function ModulePage() {
     const [searchParams] = useSearchParams();
     useEffect(() => {
         const show = searchParams.get('showFavorites');
-        if (show === '1' || show === 'true') {
+        if (show === '1') {
             setFilters(prev => ({ ...prev, showFavorites: true }));
+        } else if ( show === "0") {
+            setFilters(prev => ({ ...prev, showFavorites: false }));
         }
+
     }, [searchParams]);
 
     const handleToggleFavorite = async (moduleId: string) => {
