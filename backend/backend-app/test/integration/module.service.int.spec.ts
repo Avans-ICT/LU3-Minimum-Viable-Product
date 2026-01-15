@@ -61,7 +61,7 @@ describe('ModuleService (integration)', () => {
         expect(batch.map(m => m.name)).toEqual(expect.arrayContaining(['M1', 'M2']));
     });
 
-    //niet bestaande modules geven error
+    //niet bestaande modules geven error als je een fout id meegeeft
     it('throws NotFoundException for non-existent module', async () => {
         const fakeId = new Types.ObjectId().toString();
         await expect(moduleService.getModuleById(fakeId)).rejects.toThrow();

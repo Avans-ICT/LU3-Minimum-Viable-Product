@@ -6,7 +6,6 @@ export class ChangeProfileDto {
     @IsString()
     firstName?: string;
 
-    
     @IsOptional()
     @MaxLength(25)
     @IsString()

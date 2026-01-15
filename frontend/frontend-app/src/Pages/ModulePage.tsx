@@ -83,7 +83,15 @@ function ModulePage() {
                 setModules(data);
                 setLoading(false);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'An error occurred');
+                if (err instanceof TypeError && err.message === "Failed to fetch") {
+                    setError(
+                        "We kunnen op dit moment geen verbinding maken met de server. Controleer uw internetverbinding of probeer het later opnieuw."
+                    );
+                } else if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("Er is iets misgegaan. Probeer het later opnieuw.");
+                }
                 setLoading(false);
             }
         };
@@ -126,7 +134,7 @@ function ModulePage() {
     });
 
     if (loading) return <div>Modules inladen...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div className="alert alert-danger">Error: {error}</div>;
 
     return (
         <> 

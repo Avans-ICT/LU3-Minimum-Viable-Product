@@ -71,7 +71,7 @@ function ProfileForm() {
                 navigate("/recommendations");
             }
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Onbekende fout");
+            setError("Profiel opslaan mislukt, kom later terug om het nog eens te proberen");
         } finally {
             setLoading(false);
         }

@@ -31,12 +31,11 @@ export default function ModulePage() {
             try {
                 setLoading(true);
                 setError(null);
-
-
+                
                 const response = await apiFetch(`/modules/${id}`);
 
                 if (!response.ok) {
-                    throw new Error('Module not found');
+                    throw new Error('Module niet gevonden');
                 }
 
                 const data: Module = await response.json();
@@ -82,9 +81,9 @@ export default function ModulePage() {
             <div className="container min-vh-100 d-flex align-items-center justify-content-center">
                 <div className="text-center">
                     <div className="spinner-border text-primary mb-3" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                        <span className="visually-hidden">Laden...</span>
                     </div>
-                    <p className="fs-5">Loading module...</p>
+                    <p className="fs-5">Module inladen...</p>
                 </div>
             </div>
         );
@@ -105,7 +104,7 @@ export default function ModulePage() {
         return (
             <div className="container min-vh-100 d-flex align-items-center justify-content-center">
                 <div className="alert alert-warning" role="alert">
-          Module not found
+                    Module niet gevonden
                 </div>
             </div>
         );

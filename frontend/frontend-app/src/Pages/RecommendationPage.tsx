@@ -53,7 +53,7 @@ function RecommendationPage() {
                     method: "POST",
                     body: JSON.stringify(requestBody),
                 });
-                if (!postRes.ok) throw new Error("Failed to request recommendations.");
+                if (!postRes.ok) throw new Error("Het is niet gelukt om aanbevelingen op te halen, probeer het later nog eens.");
                 const postData: { eventId: string; status: string } = await postRes.json();
                 setEventId(postData.eventId);
 
@@ -71,20 +71,20 @@ function RecommendationPage() {
 
                 while (attempt < maxAttempts) {
                     const getRes = await apiFetch(`/recommendation-events/${postData.eventId}`);
-                    if (!getRes.ok) throw new Error("Failed to fetch recommendations.");
+                    if (!getRes.ok) throw new Error("Het is niet gelukt om aanbevelingen op te halen, probeer het later nog eens.");
 
                     eventData = await getRes.json();
 
-                    if (!eventData) throw new Error("AI model is still processing.");
+                    if (!eventData) throw new Error("Het AI model is nog aan het nadenken.");
                     if (eventData.status === "COMPLETED") break;
-                    if (eventData.status === "FAILED") throw new Error(eventData.error_message ?? "AI model failed.");
+                    if (eventData.status === "FAILED") throw new Error(eventData.error_message ?? "Het AI model is er niet in geslaagd aanbevelingen te maken, probeer het later nog eens.");
 
                     await new Promise((res) => setTimeout(res, 1000));
                     attempt++;
                 }
 
                 if (!eventData || eventData.status !== "COMPLETED" || !eventData.results || eventData.results.length === 0) {
-                    throw new Error(eventData?.error_message ?? "AI model is still processing.");
+                    throw new Error(eventData?.error_message ?? "Het AI model is nog aan het nadenken.");
                 }
 
                 const sortedRecommendations = eventData.results.sort((a, b) => a.rank - b.rank);
@@ -95,12 +95,20 @@ function RecommendationPage() {
                     method: "POST",
                     body: JSON.stringify({ ids: moduleIds }),
                 });
-                if (!batchRes.ok) throw new Error("Failed to fetch module details.");
+                if (!batchRes.ok) throw new Error("Het is niet gelukt om de aanbevolen modules te tonen, probeer het later nog eens.");
 
                 const modulesData: Module[] = await batchRes.json();
                 setModules(modulesData);
             } catch (err) {
-                setError(err instanceof Error ? err.message : "An unknown error occurred");
+                if (err instanceof TypeError && err.message === "Failed to fetch") {
+                    setError(
+                        "We kunnen op dit moment geen verbinding maken met de server. Controleer uw internetverbinding of probeer het later opnieuw."
+                    );
+                } else if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("Er is iets misgegaan. Probeer het later opnieuw.");
+                }
             } finally {
                 setLoading(false);
             }
