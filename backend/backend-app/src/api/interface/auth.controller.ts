@@ -75,7 +75,7 @@ export class AuthController {
     }
 
     @UseInterceptors(JwtCookieInterceptor)
-    @UseGuards(CsrfGuard, AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), CsrfGuard)
     @Put('/profile')
     async changeProfile(@Req() req, @Body() ChangeProfileDto: ChangeProfileDto) {
         return await this.authService.changeProfile(ChangeProfileDto, req.user.userId);

@@ -14,13 +14,13 @@ export class FavoriteController {
         return this.favoriteService.getFavorites(req.user.userId);
     }
 
-    @UseGuards(CsrfGuard, AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'),CsrfGuard)
     @Post()
     async addFavorite(@Req() req, @Body() favoriteDto: FavoriteDto) {
         await this.favoriteService.addFavorite(req.user.userId, favoriteDto.moduleID);
     }
 
-    @UseGuards(CsrfGuard, AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'),CsrfGuard)
     @Delete()
     async removeFavorite(@Req() req, @Body() favoriteDto: FavoriteDto) {
         await this.favoriteService.removeFavorite(req.user.userId, favoriteDto.moduleID);
