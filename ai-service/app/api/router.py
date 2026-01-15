@@ -1,4 +1,3 @@
-# ai-service/app/api/router.py
 from fastapi import APIRouter
 
 from app.api.routers import recommendations
