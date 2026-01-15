@@ -6,7 +6,7 @@ from typing import Optional, Dict, Any, Tuple, List
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-from app.services.recommender_service import normalize_text
+from app.core.text_normalizer import normalize_text
 
 
 @dataclass
