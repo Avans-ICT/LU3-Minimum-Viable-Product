@@ -1,9 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export default function Header() {
     const { profile, loading, logout } = useAuth();
+    const location = useLocation();
+
+    const navClass = (path: string, favValue?: string) => {
+        let active = false;
+        if (path.startsWith('/allmodules')) {
+            if (!location.pathname.startsWith('/allmodules')) {
+                active = false;
+            } else {
+                const params = new URLSearchParams(location.search);
+                const val = params.get('showFavorites');
+                if (favValue !== undefined) {
+                    active = val === favValue;
+                } else {
+                    active = val === null || val === '0';
+                }
+            }
+        } else {
+            active = location.pathname === path;
+        }
+
+        return 'nav-link' + (active ? ' bg-white rounded text-dark' : '');
+    }
     
     if (!loading)
         return (
@@ -18,27 +40,27 @@ export default function Header() {
                             {profile ? (
                                 <>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/home">
+                                        <NavLink className={() => navClass('/home')} to="/home">
                                             Home
-                                        </Link>
+                                        </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/allmodules?showFavorites=0">
+                                        <NavLink className={() => navClass('/allmodules','0')} to="/allmodules?showFavorites=0">
                                             Modules
-                                        </Link>
+                                        </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/allmodules?showFavorites=1">
+                                        <NavLink className={() => navClass('/allmodules','1')} to="/allmodules?showFavorites=1">
                                             Favorieten
-                                        </Link>
+                                        </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/recommendations">
+                                        <NavLink className={() => navClass('/recommendations')} to="/recommendations">
                                             Suggesties
-                                        </Link>
+                                        </NavLink>
                                     </li>
 
                                     <li className="nav-item dropdown ms-2">
@@ -57,11 +79,11 @@ export default function Header() {
                                             aria-labelledby="userDropdown"
                                         >
                                             <li>
-                                                <Link className="dropdown-item" to="/profile">
+                                                <NavLink className={() => 'dropdown-item text-dark'} to="/profile">
                                                     {(!profile.interests || profile.interests === "")
                                                         ? "Profiel maken"
                                                         : "Profiel bewerken"}
-                                                </Link>
+                                                </NavLink>
                                             </li>
                                             <li><hr className="dropdown-divider" /></li>
                                             <li>
@@ -78,15 +100,15 @@ export default function Header() {
                             ) : (
                                 <>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/login">
+                                        <NavLink className={() => navClass('/login')} to="/login">
                                             Login
-                                        </Link>
+                                        </NavLink>
                                     </li>
 
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/register">
+                                        <NavLink className={() => navClass('/register')} to="/register">
                                             Register
-                                        </Link>
+                                        </NavLink>
                                     </li>
                                 </>
                             )}

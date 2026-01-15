@@ -187,7 +187,7 @@ function Register() {
                                         "Registreren"
                                     )}
                                 </button>
-                                <p className="mb-1">heeft u al een account <a href="/login">log dan in</a>.</p>
+                                <p className="mb-1">Heb je al een account <a href="/login">log dan in</a>.</p>
                             </form>
                         </div>
                         

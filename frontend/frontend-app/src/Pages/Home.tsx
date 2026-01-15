@@ -21,7 +21,7 @@ function Home()  {
                 
                 <div className="row mt-5 g-4">
                     <div className="col-12 col-md-6">
-                        <Link to="/allmodules" type="button" className="btn btn-custom-red btn-lg w-100 p-4">
+                        <Link to="/allmodules?showFavorites=0" type="button" className="btn btn-custom-red btn-lg w-100 p-4">
                             <strong style={{fontSize: '1.3rem'}}>Bekijk alle modules</strong>
                         </Link>
                     </div>

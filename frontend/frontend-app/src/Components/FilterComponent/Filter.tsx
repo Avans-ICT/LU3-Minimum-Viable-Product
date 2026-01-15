@@ -67,6 +67,17 @@ function Filters({ filters, setFilters }: FiltersProps) {
     return (
         <div className="card shadow-sm h-100">
             <div className="card-body">
+                <div className="mb-3 p-2">
+                    <h5 className="mb-2">{filters.showFavorites ? 'Modules' : 'Favorieten'}</h5>
+                    <button 
+                        className={filters.showFavorites ? 'btn bg-Orange shadow' : 'btn btn-danger shadow'} 
+                        onClick={toggleShowFavorites}
+                    >
+                        {filters.showFavorites ? 'Toon Modules' : 'Toon Favorieten'}
+                    </button>
+                </div>
+                <hr />
+
                 {/* Header */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4 className="mb-0">Filters</h4>
@@ -76,24 +87,12 @@ function Filters({ filters, setFilters }: FiltersProps) {
                                 className="btn btn-sm btn-outline-danger"
                                 onClick={clearFilters}
                             >
-                                Wis alles
+                                Wis Filters
                             </button>
                         )}
                     </div>
 
                 </div>
-                <hr />
-
-                <div className="mb-3 p-2">
-                    <h5 className="mb-2">Favorieten</h5>
-                    <button 
-                        className={filters.showFavorites ? 'btn btn-success shadow' : 'btn btn-danger shadow'} 
-                        onClick={toggleShowFavorites}
-                    >
-                        {filters.showFavorites ? '✓ Actief' : 'Toon favorieten'}
-                    </button>
-                </div>
-                <hr />
 
 
 
@@ -116,7 +115,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                         </OverlayTrigger>
                     </div>
                     <div className="ms-2">
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 
@@ -126,7 +125,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                             />
                             <label className="form-check-label" htmlFor="ec15">15 EC</label>
                         </div>
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 
@@ -159,7 +158,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                         </OverlayTrigger>
                     </div>
                     <div className="ms-2">
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 
@@ -169,7 +168,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                             />
                             <label className="form-check-label" htmlFor="locBreda">Breda</label>
                         </div>
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 
@@ -179,7 +178,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                             />
                             <label className="form-check-label" htmlFor="locDenBosch">Den Bosch</label>
                         </div>
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 
@@ -212,7 +211,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                         </OverlayTrigger>
                     </div>
                     <div className="ms-2">
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 
@@ -222,7 +221,7 @@ function Filters({ filters, setFilters }: FiltersProps) {
                             />
                             <label className="form-check-label" htmlFor="levelNLQF5">Niveau 5</label>
                         </div>
-                        <div className="form-check form-switch mb-2">
+                        <div className="form-check mb-2">
                             <input 
                                 className="form-check-input" 
                                 type="checkbox" 

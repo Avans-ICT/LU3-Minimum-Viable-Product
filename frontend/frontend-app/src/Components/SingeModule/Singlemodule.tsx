@@ -27,21 +27,26 @@ const SingleModule: React.FC<SingleModuleProps> = ({
                 <p className="card-text flex-grow-1">{shortdescription}</p>
                 <div className="mt-auto">
                     <p className="card-text mb-2">
-                        <small className="text-muted">
+                        <div className="text-muted">
                             <i className="bi bi-geo-alt"></i> {location}
-                        </small>
+                        </div>
                     </p>
-                    <div className="d-grid gap-2">
-                        <button
-                            type="button"
-                            className={isFavorite ? 'btn btn-danger btn-sm' : 'btn btn-outline-danger btn-sm'}
-                            onClick={handleToggle}
-                        >
-                            {isFavorite ? 'Favoriet' : 'Voeg toe aan favorieten'}
-                        </button>
-                        <Link to={`/module/${id}`} className="btn btn-primary btn-sm w-100">
-                            Bekijk Module
-                        </Link>
+                    <div className="row gx-2">
+                        <div className="col-6">
+                            <Link to={`/module/${id}`} className="btn bg-Orange btn-sm w-100">
+                                Bekijk Module
+                            </Link>
+                        </div>
+
+                        <div className="col-6">
+                            <button
+                                type="button"
+                                className={(isFavorite ? 'btn btn-danger ' : 'btn btn-outline-danger ') + 'btn-sm w-100'}
+                                onClick={handleToggle}
+                            >
+                                {isFavorite ? 'Favoriet verwijderen' : 'Voeg toe aan favorieten'}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
