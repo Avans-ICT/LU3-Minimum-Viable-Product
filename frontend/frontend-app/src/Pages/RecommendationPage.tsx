@@ -166,7 +166,14 @@ function RecommendationPage() {
     }
 
     if (loading) return <div>Suggesties ophalen...</div>;
-    if (error) return <div className="alert alert-danger">Error: {error}</div>;
+    if (error) return (
+        <div className="container mt-5">
+            <div className="alert alert-warning" role="alert">
+                <h5 className="mb-2">Aanbevelingen niet beschikbaar</h5>
+                <p className="mb-0">{error}</p>
+            </div>
+        </div>
+    );
 
     // Type-safe mapping
     const recommendationsWithModules = recommendations

@@ -134,7 +134,14 @@ function ModulePage() {
     });
 
     if (loading) return <div>Modules inladen...</div>;
-    if (error) return <div className="alert alert-danger">Error: {error}</div>;
+    if (error) return (
+        <div className="container mt-5">
+            <div className="alert alert-warning" role="alert">
+                <h5 className="mb-2">Modules niet beschikbaar</h5>
+                <p className="mb-0">{error}</p>
+            </div>
+        </div>
+    );
 
     return (
         <> 
