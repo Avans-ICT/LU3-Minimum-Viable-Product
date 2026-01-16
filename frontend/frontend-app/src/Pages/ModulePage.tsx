@@ -144,7 +144,7 @@ function ModulePage() {
     );
 
     return (
-        <> 
+        <>
             <div className="container-fluid mt-4">
                 <div className="row">
                     <div className="col-md-2">
@@ -152,6 +152,8 @@ function ModulePage() {
                     </div>
                     <div className="col-md-10">
                         <div className="mb-3 mt-3">
+                            <h6 className="mb-1"><strong>Zoeken</strong></h6>
+                            <small className="text-muted d-block mb-2">Gebruik de zoekbalk om modules op naam te vinden of pas filters toe.</small>
                             <input
                                 type="text"
                                 className="form-control"

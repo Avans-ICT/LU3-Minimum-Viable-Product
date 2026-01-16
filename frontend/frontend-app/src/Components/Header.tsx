@@ -29,14 +29,37 @@ export default function Header() {
     
     if (!loading)
         return (
-            <nav className="navbar navbar-expand-lg navbar-dark bg-gray5">
-                <div className="container-fluid">
+            <>
+                <style>{`
+                    .center-nav { position: static; transform: none; left: auto; }
+                    @media (min-width: 992px) {
+                        .center-nav { position: absolute; left: 50%; transform: translateX(-50%); }
+                    }
+                `}</style>
+                <nav className="navbar navbar-expand-lg navbar-dark bg-gray5">
+                <div className="container-fluid position-relative">
                     <Link className="navbar-brand" to="/">
                         Avans Keuzekompas
                     </Link>
 
-                    <div className="collapse navbar-collapse show">
-                        <ul className="navbar-nav ms-auto">
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div className="collapse navbar-collapse" id="mainNavbar">
+                        <ul className="navbar-nav me-auto">
+                            {/* Left side spacer */}
+                        </ul>
+
+                        <ul className="navbar-nav center-nav d-flex">
                             {profile ? (
                                 <>
                                     <li className="nav-item">
@@ -62,7 +85,13 @@ export default function Header() {
                                             Suggesties
                                         </NavLink>
                                     </li>
+                                </>
+                            ) : null}
+                        </ul>
 
+                        <ul className="navbar-nav ms-auto">
+                            {profile ? (
+                                <>
                                     <li className="nav-item dropdown ms-2">
                                         <button
                                             className="btn btn-outline-light dropdown-toggle"
@@ -116,5 +145,7 @@ export default function Header() {
                     </div>
                 </div>
             </nav>
-        );
+            
+            </>
+        )
 }
