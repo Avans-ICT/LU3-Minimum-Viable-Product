@@ -63,7 +63,7 @@ export default function Header() {
                             {profile ? (
                                 <>
                                     <li className="nav-item">
-                                        <NavLink className={() => navClass('/home')} to="/home">
+                                        <NavLink className={() => navClass('/')} to="/">
                                             Home
                                         </NavLink>
                                     </li>

@@ -49,21 +49,28 @@ function RecommendationPage() {
                     constraintsStudycreditsMax: profile.studycredits ?? 0,
                 };
 
-                const postRes = await apiFetch("/recommendation-events/request", {
-                    method: "POST",
-                    body: JSON.stringify(requestBody),
-                });
+                const postRes = await Promise.race([
+                    apiFetch("/recommendation-events/request", {
+                        method: "POST",
+                        body: JSON.stringify(requestBody),
+                    }),
+                    new Promise<never>((_, reject) =>
+                        setTimeout(
+                            () =>
+                                reject(
+                                    new Error(
+                                        "Het starten van de aanbeveling duurt te lang en is afgebroken."
+                                    )
+                                ),
+                            5000
+                        )
+                    ),
+                ]);
                 if (!postRes.ok) throw new Error("Het is niet gelukt om aanbevelingen op te halen, probeer het later nog eens.");
                 const postData: { eventId: string; status: string } = await postRes.json();
                 setEventId(postData.eventId);
 
-                const feedbackRes = await apiFetch(`/recommendation-events/${postData.eventId}/feedback`);
-                if (feedbackRes.ok) {
-                    const feedbackData = await feedbackRes.json();
-                    if (feedbackData && feedbackData.length > 0) {
-                        setFeedbackSent(true);
-                    }
-                }
+                
 
                 const maxAttempts = 10;
                 let attempt = 0;

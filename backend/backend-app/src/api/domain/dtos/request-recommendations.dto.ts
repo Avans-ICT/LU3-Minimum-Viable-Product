@@ -26,12 +26,12 @@ export class RequestRecommendationsDto {
   @IsString()
   constraintsLevel?: string;
 
-  @IsIn([15, 30])
+  @IsIn([0, 15, 30])
   @IsOptional()
   @IsInt()
   constraintsStudycreditsMin?: number;
 
-  @IsIn([15, 30])
+  @IsIn([0, 15, 30])
   @IsOptional()
   @IsInt()
   constraintsStudycreditsMax?: number;

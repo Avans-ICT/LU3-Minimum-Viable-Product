@@ -24,9 +24,9 @@ function ProfileForm() {
     // synchroniseren als profile later laadt
     useEffect(() => {
         setInterests(profile?.interests?.trim() || "");
-        setLocation(profile?.location || "Breda");
-        setLevel(profile?.level || "NLQF5");
-        setStudycredits(profile?.studycredits || 15);
+        setLocation(profile?.location || "");
+        setLevel(profile?.level || "");
+        setStudycredits(profile?.studycredits || 0);
     }, [profile]);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -41,11 +41,6 @@ function ProfileForm() {
 
         if (interests.length > 1000) {
             setError("Interesses mogen maximaal 1000 tekens bevatten");
-            return;
-        }
-        
-        if (!location || !level || !studycredits) {
-            setError("Alle velden moeten ingevuld zijn");
             return;
         }
         console.log(level)
@@ -101,8 +96,8 @@ function ProfileForm() {
                                 className="form-select"
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
-                                required
                             >
+                                <option value="">-</option>
                                 <option value="Breda">Breda</option>
                                 <option value="Den Bosch">Den Bosch</option>
                                 <option value="Tilburg">Tilburg</option>
@@ -115,8 +110,8 @@ function ProfileForm() {
                                 className="form-select"
                                 value={level}
                                 onChange={(e) => setLevel(e.target.value)}
-                                required
                             >
+                                <option value="">-</option>
                                 <option value="NLQF5">NLQF5</option>
                                 <option value="NLQF6">NLQF6</option>
                             </select>
@@ -128,8 +123,8 @@ function ProfileForm() {
                                 className="form-select"
                                 value={studycredits}
                                 onChange={(e) => setStudycredits(Number(e.target.value))}
-                                required
                             >
+                                <option value={0}>-</option>
                                 <option value={15}>15</option>
                                 <option value={30}>30</option>
                             </select>
