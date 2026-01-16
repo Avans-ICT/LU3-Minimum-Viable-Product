@@ -11,30 +11,32 @@ export class FavoriteService {
     ) {}
 
     async addFavorite(userID: string, moduleID: string): Promise<string> {
-        const user = await this.favoriteRepository.addFavorite(userID, moduleID);
         
         //checken of module bestaat
         const moduleExists = await this.favoriteRepository.findById(moduleID);
         if (!moduleExists) throw new NotFoundException(`Module bestaat niet`);
 
+        const user = await this.favoriteRepository.addFavorite(userID, moduleID);
+
         if (!user) {
             throw new NotFoundException(`Kon niet toevoegen aan favorieten`);
         }
+
 
         return "succes";
     }
 
     async removeFavorite(userID: string, moduleID: string): Promise<string> {
-        const user = await this.favoriteRepository.removeFavorite(userID, moduleID);
 
         //checken of module bestaat
         const moduleExists = await this.favoriteRepository.findById(moduleID);
         if (!moduleExists) throw new NotFoundException(`Module bestaat niet`);
 
+        const user = await this.favoriteRepository.removeFavorite(userID, moduleID);
+
         if (!user) {
             throw new NotFoundException(`Kon niet verwijderen uit favorieten`);
         }
-
         return "succes";
     }
 

@@ -8,9 +8,9 @@ function Home()  {
                 <div className="row">
                     <div className="col-12 text-center">
                         <h1 className="fw-bold mb-0">Keuzemodule kiezen</h1>
-                        <h1 className="fw-bold mb-0">Eenvoudiger.</h1>
-                        <h1 className="fw-bold mb-0">Duidelijker.</h1>
-                        <h1 className="fw-bold mb-0">Slimmer.</h1>
+                        <h1 className="fw-bold mb-0">Eenvoudiger</h1>
+                        <h1 className="fw-bold mb-0">Duidelijker</h1>
+                        <h1 className="fw-bold mb-0">Slimmer</h1>
                         <h1 className="fw-bold mb-4">Met AI</h1>
                     
                         <p className="lead">

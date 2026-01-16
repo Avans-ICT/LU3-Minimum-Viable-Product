@@ -20,7 +20,7 @@ export class ModuleController {
         return this.moduleService.getAllModules();
     }
 
-    @UseGuards(CsrfGuard, AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), CsrfGuard)
     @Post("/batch")
     async getModulesByIds(@Body() dto: ModulesBatchDto) {
         return this.moduleService.getModulesByIds(dto.ids);

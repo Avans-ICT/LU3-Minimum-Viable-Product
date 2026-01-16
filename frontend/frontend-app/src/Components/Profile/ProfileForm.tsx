@@ -94,52 +94,56 @@ function ProfileForm() {
                         />
                     </div>
 
-                    <div className="mb-3">
-                        <label className="form-label">Locatie</label>
-                        <select
-                            className="form-select"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            required
-                        >
-                            <option value="Breda">Breda</option>
-                            <option value="Den Bosch">Den Bosch</option>
-                            <option value="Tilburg">Tilburg</option>
-                        </select>
-                    </div>
+                    <div className="row mb-4">
+                        <div className="col-md-4">
+                            <label className="form-label">Locatie</label>
+                            <select
+                                className="form-select"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                required
+                            >
+                                <option value="Breda">Breda</option>
+                                <option value="Den Bosch">Den Bosch</option>
+                                <option value="Tilburg">Tilburg</option>
+                            </select>
+                        </div>
 
-                    <div className="mb-3">
-                        <label className="form-label">NLQF Level</label>
-                        <select
-                            className="form-select"
-                            value={level}
-                            onChange={(e) => setLevel(e.target.value)}
-                            required
-                        >
-                            <option value="NLQF5">NLQF5</option>
-                            <option value="NLQF6">NLQF6</option>
-                        </select>
-                    </div>
+                        <div className="col-md-4">
+                            <label className="form-label">NLQF Level</label>
+                            <select
+                                className="form-select"
+                                value={level}
+                                onChange={(e) => setLevel(e.target.value)}
+                                required
+                            >
+                                <option value="NLQF5">NLQF5</option>
+                                <option value="NLQF6">NLQF6</option>
+                            </select>
+                        </div>
 
-                    <div className="mb-4">
-                        <label className="form-label">Studiepunten</label>
-                        <select
-                            className="form-select"
-                            value={studycredits}
-                            onChange={(e) => setStudycredits(Number(e.target.value))}
-                            required
-                        >
-                            <option value={15}>15</option>
-                            <option value={30}>30</option>
-                        </select>
+                        <div className="col-md-4">
+                            <label className="form-label">Studiepunten</label>
+                            <select
+                                className="form-select"
+                                value={studycredits}
+                                onChange={(e) => setStudycredits(Number(e.target.value))}
+                                required
+                            >
+                                <option value={15}>15</option>
+                                <option value={30}>30</option>
+                            </select>
+                        </div>
                     </div>
 
                     {error && <div className="alert alert-danger">{error}</div>}
                     {success && <div className="alert alert-success">Profiel succesvol opgeslagen!</div>}
 
-                    <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                        {loading ? "Opslaan..." : "Profiel opslaan"}
-                    </button>
+                    <div className="d-flex justify-content-end mt-4">
+                        <button type="submit" className="btn btn-primary w-25" disabled={loading}>
+                            {loading ? "Opslaan..." : "Opslaan"}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

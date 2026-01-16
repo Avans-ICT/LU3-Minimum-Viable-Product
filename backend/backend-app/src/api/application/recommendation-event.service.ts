@@ -72,6 +72,9 @@ export class RecommendationEventService {
   }
 
   async getEventById(eventId: string) {
+    if (!Types.ObjectId.isValid(eventId)) {
+      throw new BadRequestException(`Invalid eventId`);
+    }
     const event = await this.repo.findById(eventId);
     if (!event) throw new NotFoundException("RecommendationEvent not found");
     return event;
@@ -86,6 +89,9 @@ export class RecommendationEventService {
    * - stores feedback in recommendation_feedback collection
    */
   async submitFeedback(userId: string, eventId: string, dto: CreateRecommendationFeedbackDto) {
+    if (!Types.ObjectId.isValid(eventId)) {
+      throw new BadRequestException(`Invalid eventId`);
+    }
     const event = await this.repo.findById(eventId);
     if (!event) throw new NotFoundException("RecommendationEvent not found");
 

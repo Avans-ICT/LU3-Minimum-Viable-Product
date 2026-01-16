@@ -1,4 +1,3 @@
-# ai-service/app/services/recommender_service.py
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,6 +6,7 @@ from typing import Optional, Dict, Any, Tuple, List
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
+from app.core.text_normalizer import normalize_text
 
 
 @dataclass
@@ -150,7 +150,8 @@ class ContentBasedRecommender:
         if not np.isclose(alpha + beta, 1.0):
             raise ValueError("Alpha + beta moet gelijk zijn aan 1")
 
-        profile_vec = self.tfidf.transform([profile.interests_text])
+        clean_input = normalize_text(profile.interests_text)
+        profile_vec = self.tfidf.transform([clean_input])
         similarities = cosine_similarity(profile_vec, self.X_tfidf).flatten()
 
         records: List[Dict[str, Any]] = []

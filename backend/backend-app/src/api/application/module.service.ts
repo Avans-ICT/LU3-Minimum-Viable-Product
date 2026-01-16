@@ -1,9 +1,8 @@
-import { Injectable, NotFoundException, Logger } from "@nestjs/common";
+import { Injectable, NotFoundException, BadRequestException, Logger } from "@nestjs/common";
 import { ModuleRepository } from "../infrastructure/repositories/module.repository";
 import { ModuleEntity } from "../domain/entities/module.entity";
 import { toModuleEntity } from "../infrastructure/mappers/module.mapper";
-import { User } from "../infrastructure/schemas/user.schema";
-import { FavoriteRepository } from "../infrastructure/repositories/favorite.repository";
+import { Types } from "mongoose";
 
 @Injectable()
 export class ModuleService {
@@ -12,6 +11,9 @@ export class ModuleService {
 
     async getModuleById(id: string): Promise<ModuleEntity> {
         this.logger.log(`Fetching module by ID: ${id}`);
+        if (!Types.ObjectId.isValid(id)) {
+            throw new BadRequestException(`Ongeldig ID: ${id}`);
+        }
         const doc = await this.moduleRepository.findById(id);
 
         if (!doc) {
