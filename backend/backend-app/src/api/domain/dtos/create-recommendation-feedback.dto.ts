@@ -7,6 +7,8 @@ import {
   Max,
   Min,
   ValidateNested,
+  ArrayNotEmpty,
+  IsIn
 } from "class-validator";
 import { Type } from "class-transformer";
 
@@ -20,6 +22,7 @@ export class FeedbackItemDto {
    * - "RELEVANCE" (1..5)
    * - "CLICK" (1)
    */
+  @IsIn(['LIKE', 'RELEVANCE', 'CLICK'])
   @IsString()
   feedbackType!: string;
 
@@ -36,6 +39,7 @@ export class CreateRecommendationFeedbackDto {
 
   @IsArray()
   @ValidateNested({ each: true })
+  @ArrayNotEmpty()
   @Type(() => FeedbackItemDto)
   items!: FeedbackItemDto[];
 }
