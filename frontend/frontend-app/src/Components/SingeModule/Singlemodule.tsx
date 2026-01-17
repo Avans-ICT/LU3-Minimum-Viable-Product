@@ -26,14 +26,14 @@ const SingleModule: React.FC<SingleModuleProps> = ({
                 <h6 className="card-subtitle mb-2 text-muted">{studycredit} EC</h6>
                 <p className="card-text flex-grow-1">{shortdescription}</p>
                 <div className="mt-auto">
-                    <p className="card-text mb-2">
+                    <span className="card-text mb-2">
                         <div className="text-muted">
                             <i className="bi bi-geo-alt"></i> {location}
                         </div>
-                    </p>
+                    </span>
                     <div className="row gx-2">
                         <div className="col-6">
-                            <Link to={`/module/${id}`} className="btn bg-Orange btn-sm w-100">
+                            <Link to={`/module/${id}`} className="btn bg-Blauw btn-sm w-100">
                                 Bekijk Module
                             </Link>
                         </div>
