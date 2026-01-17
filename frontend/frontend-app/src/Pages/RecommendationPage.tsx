@@ -59,7 +59,7 @@ function RecommendationPage() {
                             () =>
                                 reject(
                                     new Error(
-                                        "Het starten van de aanbeveling duurt te lang en is afgebroken."
+                                        "Het AI model is even niet online, probeer het later nog eens."
                                     )
                                 ),
                             5000
