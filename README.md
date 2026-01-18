@@ -15,6 +15,7 @@ npm run start:dev
 Draai eerst het gehele jupyter notebook onder LU3-Minimum-Viable-Product\ai-service\ml\notebooks\Recommender.ipynb
 ```bash
 venv\Scripts\activate
+pip install requirements
 uvicorn app.main:app --reload
 ```
 ### Docker
