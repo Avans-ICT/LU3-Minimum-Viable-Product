@@ -70,13 +70,15 @@ const SingleModuleRecommendation: React.FC<Props> = ({
                     </div>
                 )}
 
-                <div className="mt-auto d-flex justify-content-between align-items-center">
+                <div className="mt-auto d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                    {/* Rank en Match */}
                     <div className="d-flex align-items-center gap-2">
                         <span className="badge bg-warning text-dark fs-6">Rank #{rank}</span>
                         <small className="text-muted">Match: {(score * 100).toFixed(1)}%</small>
                     </div>
 
-                    <div className="d-flex gap-2">
+                    {/* Knoppen */}
+                    <div className="d-flex gap-2 flex-wrap">
                         <button
                             type="button"
                             className={
@@ -84,13 +86,13 @@ const SingleModuleRecommendation: React.FC<Props> = ({
                             }
                             onClick={() => onToggleFavorite(moduleDetails.id)}
                         >
-                            {isFavorite ? "Favoriet" : "Voeg toe aan favorieten"}
+                            {isFavorite ? "Favoriet verwijderen" : "Voeg toe aan favorieten"}
                         </button>
 
                         <button
                             type="button"
-                            className="btn btn-sm btn-outline-primary"
-                            onClick={handleViewModule} // enkel navigatie
+                            className="btn btn-sm btn-primary"
+                            onClick={handleViewModule}
                         >
                             Bekijk Module
                         </button>

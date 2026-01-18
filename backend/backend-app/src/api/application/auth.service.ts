@@ -20,19 +20,19 @@ export class AuthService {
     //gebruikersgegevens valideren
     async login(loginDto: LoginDto): Promise<AuthResponseDto> {
         //user ophalen uit de database
-        this.logger.log(`Login attempt for ${loginDto.email}`);
+        this.logger.log(`Login attempt for user: ${this.hashEmail(loginDto.email)}`);
         const user = await this.authRepository.findByEmail(loginDto.email);
 
         //kijken of de user bestaat
         if (!user) {
-            this.logger.warn(`Login failed: user not found for ${loginDto.email}`);
+            this.logger.warn(`Login failed for user: ${this.hashEmail(loginDto.email)}`);
             throw new NotFoundException('Ongeldige gegevens');
         }
 
         //wachtwoord vergelijken met wachtwoordhash in database
         const isValid = await argon2.verify(user.password, loginDto.password);
         if (!isValid) {
-            this.logger.warn(`Login failed: invalid password for ${loginDto.email}`);
+            this.logger.warn(`Login failed for user: ${this.hashEmail(loginDto.email)}`);
             throw new UnauthorizedException('Ongeldige gegevens');
         }
 
@@ -44,7 +44,7 @@ export class AuthService {
             await argon2.hash(refreshToken),
         );
 
-        this.logger.log(`Login successful for ${loginDto.email} (userId: ${user.id})`);
+        this.logger.log(`Login successful for userId: ${user.id}`);
         return {
             accessToken: accessToken,
             refreshToken: refreshToken,
@@ -56,10 +56,10 @@ export class AuthService {
     //gebruiker aanmaken als hij nieuw is.
     async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
         // check of user al bestaat
-        this.logger.log(`Register attempt for ${registerDto.email}`);
+        this.logger.log(`Register attempt for user: ${this.hashEmail(registerDto.email)}`);
         const existing = await this.authRepository.findByEmail(registerDto.email);
         if (existing) {
-            this.logger.warn(`Register failed: user already exists for ${registerDto.email}`);
+            this.logger.warn(`Register failed: user already exists for user: ${this.hashEmail(registerDto.email)}`);
             throw new ConflictException('Er bestaat al een account met dit e-mailadres');
         }
 
@@ -77,7 +77,7 @@ export class AuthService {
             user._id.toString(),
             await argon2.hash(refreshToken),
         );
-        this.logger.log(`Register successful for ${registerDto.email} (userId: ${user._id})`);
+        this.logger.log(`Register successful for userId: ${user._id}`);
 
         return {
             accessToken: accessToken,
@@ -171,5 +171,9 @@ export class AuthService {
             refreshToken: newRefreshToken,
             csrfToken: crypto.randomBytes(24).toString('hex'),
         };
+    }
+
+    private hashEmail(email: string): string {
+        return crypto.createHash('sha256').update(email).digest('hex');
     }
 }
