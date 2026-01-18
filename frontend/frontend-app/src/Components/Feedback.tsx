@@ -73,7 +73,7 @@ const RecommendationFeedback: React.FC<Props> = ({
 
                     <div className="card-body">
                         <p className="text-muted mb-3">
-                            Hoe relevant waren deze modules voor jou?
+                            Hoe relevant waren deze modules voor jou? *1 Slecht - 5 Super goed
                         </p>
 
                         {recommendations.map(({ recommendation, moduleDetails }) => (
