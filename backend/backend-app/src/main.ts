@@ -18,7 +18,8 @@ async function bootstrap() {
     app.getHttpAdapter().getInstance().trustProxy = true;
     app.use(
         helmet({
-            contentSecurityPolicy: isProduction
+            contentSecurityPolicy: isProduction,
+            hsts: isProduction
         }),
     );
     app.use(cookieParser());
