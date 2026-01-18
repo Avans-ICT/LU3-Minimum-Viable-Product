@@ -5,7 +5,7 @@ import type {JSX} from "react"
 export function ProtectedRoute({ children }: { children: JSX.Element }) {
     const { profile, loading } = useAuth();
 
-    if (loading) return <div>Loading…</div>;
+    if (loading) return <div>Laden...</div>;
 
     if (!profile) return <Navigate to="/login" replace />;
 

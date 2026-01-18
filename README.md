@@ -1,5 +1,33 @@
 # Project Setup — Terminal Commands Overview
 
+## Lokaal draaien
+### In /frontend/frontend-app
+```bash
+npm install
+npm run dev
+```
+### In /backend/backend-app
+```bash
+npm install
+npm run start:dev
+```
+### In /ai-service
+Draai eerst het gehele jupyter notebook onder LU3-Minimum-Viable-Product\ai-service\ml\notebooks\Recommender.ipynb
+```bash
+venv\Scripts\activate
+pip install requirements
+uvicorn app.main:app --reload
+```
+### Docker
+Docker desktop moet draaien en de redis container moet draaien
+```
+docker pull redis:7
+docker run -d --name redis -p 6379:6379 redis:7
+
+(later opnieuw opstarten)
+docker start redis
+```
+
 ## Backend (NestJS + Mongo + JWT)
 
 ### In `/backend`
@@ -15,7 +43,6 @@ npm i @nestjs/mongoose mongoose
 npm i @nestjs/passport passport @nestjs/jwt passport-jwt cookie-parser
 npm i -D @types/passport-jwt @types/cookie-parser
 npm run start:dev
-mkdir logs && touch logs/app.log logs/error.log
 ```
 
 ---
@@ -68,7 +95,6 @@ uvicorn main:app --reload --port 8000
 | `/backend/backend-app` | `npm i @nestjs/passport passport @nestjs/jwt passport-jwt cookie-parser` | JWT & Auth libraries |
 | `/backend/backend-app` | `npm i -D @types/passport-jwt @types/cookie-parser` | TS type-definities |
 | `/backend/backend-app` | `npm run start:dev` | Start backend server |
-| `/backend/backend-app` | `mkdir logs && touch logs/app.log logs/error.log` | maak log bestanden aan voor logging |
 | `/frontend` | `npm create vite@latest frontend-app -- --template react-ts` | Genereert React project |
 | `/frontend/frontend-app` | `npm install` | Installeert dependencies |
 | `/frontend/frontend-app` | `npm install react-router-dom` | Installeert router |
