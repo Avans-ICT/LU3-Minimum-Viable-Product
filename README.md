@@ -1,5 +1,29 @@
 # Project Setup — Terminal Commands Overview
 
+## Lokaal draaien
+### In /frontend/frontend-app
+```bash
+npm install
+npm run dev
+```
+### In /backend/backend-app
+```bash
+npm install
+npm run start:dev
+```
+### In /ai-service
+Draai eerst het gehele jupyter notebook onder LU3-Minimum-Viable-Product\ai-service\ml\notebooks\Recommender.ipynb
+```bash
+venv\Scripts\activate
+uvicorn app.main:app --reload
+```
+### Docker
+Docker desktop moet draaien en de redis container moet draaien
+```
+docker pull redis:7
+docker run -d --name redis -p 6379:6379 redis:7
+```
+
 ## Backend (NestJS + Mongo + JWT)
 
 ### In `/backend`
