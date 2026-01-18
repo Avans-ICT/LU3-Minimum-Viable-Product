@@ -15,7 +15,6 @@ npm i @nestjs/mongoose mongoose
 npm i @nestjs/passport passport @nestjs/jwt passport-jwt cookie-parser
 npm i -D @types/passport-jwt @types/cookie-parser
 npm run start:dev
-mkdir logs && touch logs/app.log logs/error.log
 ```
 
 ---
@@ -68,7 +67,6 @@ uvicorn main:app --reload --port 8000
 | `/backend/backend-app` | `npm i @nestjs/passport passport @nestjs/jwt passport-jwt cookie-parser` | JWT & Auth libraries |
 | `/backend/backend-app` | `npm i -D @types/passport-jwt @types/cookie-parser` | TS type-definities |
 | `/backend/backend-app` | `npm run start:dev` | Start backend server |
-| `/backend/backend-app` | `mkdir logs && touch logs/app.log logs/error.log` | maak log bestanden aan voor logging |
 | `/frontend` | `npm create vite@latest frontend-app -- --template react-ts` | Genereert React project |
 | `/frontend/frontend-app` | `npm install` | Installeert dependencies |
 | `/frontend/frontend-app` | `npm install react-router-dom` | Installeert router |
