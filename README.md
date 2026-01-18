@@ -1,105 +1,124 @@
-# Project Setup — Terminal Commands Overview
+# LU3 Minimum Viable Product — Group 9
+
+Dit project is ontwikkeld binnen **Avans Hogeschool – ICT LU3** en betreft een **full-stack Minimum Viable Product** dat studenten ondersteunt bij het kiezen van keuzemodules binnen de vrije keuzeruimte.  
+De applicatie combineert een webinterface met een **AI-ondersteund aanbevelingssysteem**, waarbij de AI uitsluitend adviserend is en de student altijd zelf de uiteindelijke keuze maakt.
+
+---
+
+## Repository structuur
+
+```
+/
+├─ frontend/
+│  └─ frontend-app/        # React (Vite + TypeScript)
+├─ backend/
+│  └─ backend-app/         # NestJS API + MongoDB + JWT (cookies)
+├─ ai-service/             # FastAPI AI-service (recommender)
+└─ README.md
+```
+
+Redis wordt gebruikt voor **asynchrone verwerking** (queue/worker) van aanbevelingsverzoeken.
+
+---
+
+## Vereisten
+
+- **Node.js** 18+ (inclusief npm)
+- **Python** 3.10+
+- **MongoDB** (lokaal of MongoDB Atlas)
+- **Docker Desktop** (alleen vereist voor Redis)
+- (Optioneel) Git
+
+---
+
+## Environment variables
+
+### Backend — `/backend/backend-app/.env`
+
+```env
+MONGODB_URI=...
+JWT_SECRET=...
+
+AI_SERVICE_URL=http://localhost:8000
+AI_SERVICE_API_KEY=...
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+FRONTEND_URL=http://localhost:5173
+NODE_ENV=development
+```
+
+---
+
+### Frontend — `/frontend/frontend-app/.env`
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+---
+
+### AI-service — `/ai-service/.env`
+
+```env
+APP_ENV=development
+APP_NAME=AI Recommender MVP
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+CORS_ORIGINS=*
+MODEL_ARTIFACT_PATH=ml/artifacts/current
+MODEL_VERSION=baseline
+```
+
+---
 
 ## Lokaal draaien
-### In /frontend/frontend-app
+
+### Redis (Docker)
+
 ```bash
-npm install
-npm run dev
-```
-### In /backend/backend-app
-```bash
-npm install
-npm run start:dev
-```
-### In /ai-service
-Draai eerst het gehele jupyter notebook onder LU3-Minimum-Viable-Product\ai-service\ml\notebooks\Recommender.ipynb
-```bash
-venv\Scripts\activate
-pip install requirements
-uvicorn app.main:app --reload
-```
-### Docker
-Docker desktop moet draaien en de redis container moet draaien
-```
 docker pull redis:7
 docker run -d --name redis -p 6379:6379 redis:7
-
-(later opnieuw opstarten)
-docker start redis
 ```
 
-## Backend (NestJS + Mongo + JWT)
+### Backend
 
-### In `/backend`
 ```bash
-npm init -y
-npm i -g @nestjs/cli
-nest new backend-app
-```
-
-### In `/backend/backend-app`
-```bash
-npm i @nestjs/mongoose mongoose
-npm i @nestjs/passport passport @nestjs/jwt passport-jwt cookie-parser
-npm i -D @types/passport-jwt @types/cookie-parser
+cd backend/backend-app
+npm install
 npm run start:dev
 ```
 
----
+### AI-service
 
-## Frontend (React + Vite + TypeScript)
-
-### In `/frontend`
 ```bash
-npm create vite@latest frontend-app -- --template react-ts
+cd ai-service
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
 
-### In `/frontend/frontend-app`
+### Frontend
+
 ```bash
+cd frontend/frontend-app
 npm install
-npm install react-router-dom
 npm run dev
 ```
 
 ---
 
-## AI-Service (FastAPI)
+## Quick check
 
-### In `/ai-service`
-```bash
-python -m venv venv
-```
-
-**Virtual environment activeren:**
-
-```bash
-venv\Scripts\activate
-```
-
-### Vervolgens in dezelfde map (`/ai-service`)
-```bash
-pip install fastapi uvicorn
-uvicorn main:app --reload --port 8000
-```
+- Frontend: http://localhost:5173  
+- Backend: http://localhost:3000  
+- AI-service: http://localhost:8000/docs  
 
 ---
 
-## Compleet Overzicht
+## Security notes
 
-| Map | Command | Beschrijving |
-|------|---------|--------------|
-| `/backend` | `npm init -y` | Initieert backend package |
-| `/backend` | `npm i -g @nestjs/cli` | Installeert Nest CLI |
-| `/backend` | `nest new backend-app` | Genereert Nest project |
-| `/backend/backend-app` | `npm i @nestjs/mongoose mongoose` | MongoDB dependencies |
-| `/backend/backend-app` | `npm i @nestjs/passport passport @nestjs/jwt passport-jwt cookie-parser` | JWT & Auth libraries |
-| `/backend/backend-app` | `npm i -D @types/passport-jwt @types/cookie-parser` | TS type-definities |
-| `/backend/backend-app` | `npm run start:dev` | Start backend server |
-| `/frontend` | `npm create vite@latest frontend-app -- --template react-ts` | Genereert React project |
-| `/frontend/frontend-app` | `npm install` | Installeert dependencies |
-| `/frontend/frontend-app` | `npm install react-router-dom` | Installeert router |
-| `/frontend/frontend-app` | `npm run dev` | Start frontend server |
-| `/ai-service` | `python -m venv venv` | Maakt virtualenv |
-| `/ai-service` | .\venv\Scripts\activate | Activeert geïsoleerde omgeving |
-| `/ai-service` | `pip install fastapi uvicorn` | Installeert FastAPI |
-| `/ai-service` | `uvicorn main:app --reload --port 8000` | Start AI-service |
+- Secrets worden niet gecommit
+- AI is adviserend en niet beslissend
