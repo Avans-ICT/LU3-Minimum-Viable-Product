@@ -22,6 +22,9 @@ Docker desktop moet draaien en de redis container moet draaien
 ```
 docker pull redis:7
 docker run -d --name redis -p 6379:6379 redis:7
+
+(later opnieuw opstarten)
+docker start redis
 ```
 
 ## Backend (NestJS + Mongo + JWT)
