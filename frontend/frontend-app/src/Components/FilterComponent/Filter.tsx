@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-
+import { useNavigate } from 'react-router';
 
 interface FilterState {
     searchTerm: string;
@@ -19,19 +19,23 @@ interface FiltersProps {
 function Filters({ filters, setFilters }: FiltersProps) {
     
     const clearFilters = () => {
-        setFilters({
+        setFilters(prev => ({
+            ...prev,
             searchTerm: '',
             location: [],
             level: [],
             credits: [],
-            favorites: filters.favorites,
-            showFavorites: false
-        });
+            favorites: filters.favorites
+        }));
     };
 
+    const navigate = useNavigate();
+
     const toggleShowFavorites = () => {
-        setFilters(prev => ({ ...prev, showFavorites: !prev.showFavorites }));
+        const next = filters.showFavorites ? '0' : '1';
+        navigate(`/allmodules?showFavorites=${next}`);
     };
+
 
     const toggleValue = <T,>(array: T[], value: T): T[] => {
         return array.includes(value)
@@ -68,9 +72,9 @@ function Filters({ filters, setFilters }: FiltersProps) {
         <div className="card shadow-sm h-100">
             <div className="card-body">
                 <div className="mb-3 p-2">
-                    <h5 className="mb-2">{filters.showFavorites ? 'Modules' : 'Favorieten'}</h5>
+                    <h5 className="mb-2">{filters.showFavorites ?  'Favorieten' : 'Modules'}</h5>
                     <button 
-                        className={filters.showFavorites ? 'btn bg-Orange shadow' : 'btn btn-danger shadow'} 
+                        className={filters.showFavorites ? 'btn btn-danger shadow' :  'btn btn-outline-danger shadow'} 
                         onClick={toggleShowFavorites}
                     >
                         {filters.showFavorites ? 'Toon Modules' : 'Toon Favorieten'}
