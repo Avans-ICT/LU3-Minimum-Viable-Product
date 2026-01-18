@@ -70,6 +70,20 @@ CORS_ORIGINS=*
 MODEL_ARTIFACT_PATH=ml/artifacts/current
 MODEL_VERSION=baseline
 ```
+## AI-model artefact (verplicht bij eerste run)
+
+De AI-service verwacht bij het opstarten een vooraf gegenereerd model-artefact op het pad:
+`ai-service/ml/artifacts/current`
+
+
+Mits deze map nog niet aanwezig is in de repository, moet deze handmatig worden aangemaakt.
+
+### Eerste keer opstarten
+Bij de eerste run moet het model handmatig worden gegenereerd door het Jupyter notebook uit te voeren: `ai-service/ml/notebooks/Recommender.ipynb`
+
+
+Na het uitvoeren van dit notebook wordt het model opgeslagen in: `ai-service/ml/artifacts/current`
+
 
 ---
 
@@ -99,6 +113,9 @@ venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
+
+### Opmerking
+Het trainen van het model is alleen vereist bij de eerste setup of wanneer het model opnieuw gegenereerd moet worden.
 
 ### Frontend
 
