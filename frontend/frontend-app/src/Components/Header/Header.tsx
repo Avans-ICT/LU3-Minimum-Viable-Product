@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../../auth/AuthContext";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export default function Header() {
