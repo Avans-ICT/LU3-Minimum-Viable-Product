@@ -36,18 +36,19 @@ Redis wordt gebruikt voor **asynchrone verwerking** (queue/worker) van aanbeveli
 ### Backend — `/backend/backend-app/.env`
 
 ```env
-MONGODB_URI=...
-JWT_SECRET=...
+MONGODB_URI=x
+JWT_SECRET=x
 
-AI_SERVICE_URL=http://localhost:8000
-AI_SERVICE_API_KEY=...
+AI_SERVICE_URL=x
+AI_SERVICE_API_KEY=x
 
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=
+REDIS_HOST=x
+REDIS_PORT=x
+REDIS_PASSWORD=x
 
-FRONTEND_URL=http://localhost:5173
-NODE_ENV=development
+FRONTEND_URL=https://nietrelevant/bijlokaal.testen
+
+NODE_ENV=production / development
 ```
 
 ---
@@ -55,7 +56,7 @@ NODE_ENV=development
 ### Frontend — `/frontend/frontend-app/.env`
 
 ```env
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=x
 ```
 
 ---
@@ -63,12 +64,25 @@ VITE_API_URL=http://localhost:3000
 ### AI-service — `/ai-service/.env`
 
 ```env
+# App
 APP_ENV=development
 APP_NAME=AI Recommender MVP
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+
+# CORS
 CORS_ORIGINS=*
+
+# ML
 MODEL_ARTIFACT_PATH=ml/artifacts/current
-MODEL_VERSION=baseline
+MODEL_VERSION=tfidf_v1
+
+# API key
+AI_SERVICE_API_KEY=supersecret
+
+# Optional:
+DEFAULT_ALPHA=0.7
+DEFAULT_BETA=0.3
+ALGORITHM_NAME=content_based
+API_PREFIX=
 ```
 ## AI-model artefact (verplicht bij eerste run)
 
